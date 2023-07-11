@@ -10,7 +10,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    private function SalehAhbal(){
+    private function test(){
 
 
         //testinng push
