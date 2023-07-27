@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->id();
             $table->string('name');
-            $table->string('picture')->nullable();
+            $table->longtext('picture')->nullable();
             $table->longText('description');
             $table->string('color');
             $table->float('price_retail');

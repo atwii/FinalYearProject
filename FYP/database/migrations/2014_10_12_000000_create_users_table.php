@@ -22,8 +22,8 @@ return new class extends Migration
             $table->integer('phone_nb');
             $table->string('username');
             $table->string('birthdate');
-            // $table->unsignedBigInteger('role');
-            // $table->foreign('role')->references('id')->on('roles');
+            $table->unsignedBigInteger('role');
+            $table->foreign('role')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();
 

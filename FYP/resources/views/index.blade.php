@@ -80,6 +80,9 @@ https://templatemo.com/tm-571-hexashop
                                 </ul>
                             </li>
                             <li class="scroll-to-section"><a href="#explore">Explore</a></li>
+                            
+                            <!-- Display the user's name when the user is logged in -->
+                            <li>{{ Auth::user()->name }}</li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
