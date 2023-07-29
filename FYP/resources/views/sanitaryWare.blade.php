@@ -29,6 +29,8 @@ TemplateMo 571 Hexashop
 https://templatemo.com/tm-571-hexashop
 
 -->
+<script src="assets/js/jquery-2.1.0.min.js"></script>
+
     </head>
     
     <body>
@@ -89,59 +91,34 @@ https://templatemo.com/tm-571-hexashop
         </div>
     </header>
     <!-- ***** Subscribe Area Ends ***** -->
-    <div class="main-banner" id="top">
-        <div class="container-fluid">
-        <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign up your account</h4>
-                                    <form  id="registrationForm">
-                                        <div class="form-group">
-                                            <label><strong>Name</strong></label>
-                                            <input type="text" class="form-control" name="name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Username</strong></label>
-                                            <input type="text" class="form-control" name="username">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control" name="email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Address</strong></label>
-                                            <input type="text" class="form-control" name="address">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Phone Number</strong></label>
-                                            <input type="number" class="form-control" name="phone_nb">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Birth Date</strong></label>
-                                            <input type="date" class="form-control" name="birthdate">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control" name="password">
-                                        </div>
-                                        <div class="text-center mt-4">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
-                                        </div>
-                                    </form>
-                                    <div class="new-account mt-3">
-                                        <p>Already have an account? <a class="text-primary" href="./login">Sign in</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner-content">
+                        <h2>Our Products</h2>
                     </div>
                 </div>
             </div>
-</div></div>
+        </div>
+    </div>
+    
+    <section class="section" id="products">
+    <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Our Sanitary Ware</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row" id="addProducts">
 
+            </div>
+        </div>
+    </section>
 
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -246,41 +223,71 @@ https://templatemo.com/tm-571-hexashop
   </body>
 </html>
 
+
 <script>
-$(document).ready(function () {
-        // Function to handle the form submission
-        $('#registrationForm').submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
+    $(document).ready(function () {
+        // Add event listener for form submission
+        $("#login-form").submit(function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
 
             // Get the form data
             var formData = {
-                name: $('input[name="name"]').val(),
-                username: $('input[name="username"]').val(),
-                email: $('input[name="email"]').val(),
-                address: $('input[name="address"]').val(),
-                phone_nb: $('input[name="phone_nb"]').val(),
-                birthdate: $('input[name="birthdate"]').val(),
-                password: $('input[name="password"]').val()
+                email: $("input[type='email']").val(),
+                password: $("input[type='password']").val()
             };
+            var token = sessionStorage.getItem("accessToken");
 
-            // Make the AJAX POST request
+            // Make the AJAX call
             $.ajax({
-                type: 'POST',
-                url: '/api/auth/register',
+                type: "POST",
+                url: "/api/auth/login",
                 data: formData,
-                dataType: 'json', // Set the expected response data type
                 success: function (response) {
-                    // Handle the success response here
+                    // Assuming the response contains isAdmin key with a number value
+                    var isAdmin = response.isAdmin;
                     sessionStorage.setItem('accessToken',response.access_token);
-                    window.location.href = "/"; 
-                    // You can show a success message to the user or redirect to another page
+
+                    // Check the isAdmin value and redirect accordingly
+                    if (isAdmin === 2) {
+                        // Redirect to admin page
+                        window.location.href = "/admin"; // Replace "/admin" with your admin page URL
+                        //console.log(response);
+                    } else {
+                        // Redirect to regular user page
+                        window.location.href = "/"; // Replace "/user" with your regular user page URL
+                    }
                 },
                 error: function (error) {
-                    // Handle the error response here
-                    console.error('Registration error:', error);
-                    // You can show an error message to the user or handle specific errors
+                    console.error("Login error:", error);
+                    // Handle login error, show error message, etc.
                 }
             });
         });
+        var tableBody = $('#addProducts');
+        $.ajax({
+                type: 'GET',
+                url: '/api/addSanitary',
+                success: function(data) {
+                    console.log(data);
+                    var usersArray = [data.sanitarywares];
+                    tableBody.html('');
+                    var userRow = '';
+                    usersArray.forEach(function (user) {
+                        
+                        for (const key in user) {
+                            var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
+                            userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/sanitaryInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
+                            userRow += '<div class="down-content"><a href="/sanitaryInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+                            
+                        }
+                    });
+                    tableBody.append(userRow);
+                    },
+                error: function(error) {
+                    console.error('Error fetching tile information:', error);
+                    // You can handle errors here, e.g., show an error message to the user
+                }
+            });
+
     });
 </script>

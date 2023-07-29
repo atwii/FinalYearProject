@@ -12,6 +12,8 @@ use App\Models\Problem;
 use League\ColorExtractor\Color;
 use League\ColorExtractor\ColorExtractor;
 use League\ColorExtractor\Palette;
+use Illuminate\Support\Facades\Log;
+
 
 class AdminController extends Controller
 {
@@ -35,6 +37,8 @@ class AdminController extends Controller
 
     public function showAllUsers()
     {
+        Log::info(auth()->user());
+        Log::info("bade moot");
         $users = User::with('role')->get();
         return response()->json($users);
     }

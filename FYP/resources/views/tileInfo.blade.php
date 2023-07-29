@@ -77,7 +77,8 @@ https://templatemo.com/tm-571-hexashop
                                     <li><a href="/tileFinder">Tile Finder</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
+                            <li class="login-user"><a href="/login">Login</a></li>
+                            <li id="loggedInUserContent" style="display: none;"><a href="#" id="logoutLink">Logout</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -88,61 +89,24 @@ https://templatemo.com/tm-571-hexashop
             </div>
         </div>
     </header>
-    <!-- ***** Subscribe Area Ends ***** -->
-    <div class="main-banner" id="top">
-        <div class="container-fluid">
-        <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign up your account</h4>
-                                    <form  id="registrationForm">
-                                        <div class="form-group">
-                                            <label><strong>Name</strong></label>
-                                            <input type="text" class="form-control" name="name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Username</strong></label>
-                                            <input type="text" class="form-control" name="username">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control" name="email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Address</strong></label>
-                                            <input type="text" class="form-control" name="address">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Phone Number</strong></label>
-                                            <input type="number" class="form-control" name="phone_nb">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Birth Date</strong></label>
-                                            <input type="date" class="form-control" name="birthdate">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control" name="password">
-                                        </div>
-                                        <div class="text-center mt-4">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
-                                        </div>
-                                    </form>
-                                    <div class="new-account mt-3">
-                                        <p>Already have an account? <a class="text-primary" href="./login">Sign in</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
                 </div>
             </div>
-</div></div>
+        </div>
+    </div>
 
 
+    <section class="section" id="product">
+        <div class="container" id="product-container">
+            
+        </div>
+    </section>
+    
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
@@ -226,7 +190,48 @@ https://templatemo.com/tm-571-hexashop
     <script src="assets/js/custom.js"></script>
 
     <script>
+    $(document).ready(function () {
+        // Function to check if a token exists in the session
+        function isUserLoggedIn() {
+            return !!sessionStorage.getItem('accessToken'); // Replace 'your_token_key' with the actual key you use to store the token in the session.
+        }
 
+        // Function to show/hide the appropriate links based on the login status
+        function updateLoginStatus() {
+            if (isUserLoggedIn()) {
+                $('.login-user').hide(); // Hide the "Login" link
+                $('#loggedInUserContent').show(); // Show the content for logged-in user
+            } else {
+                $('.login-user').show(); // Show the "Login" link
+                $('#loggedInUserContent').hide(); // Hide the content for logged-in user
+            }
+        }
+
+        // Initial check on page load
+        updateLoginStatus();
+        // Click event for the "Logout" link
+        $('#logoutLink').on('click', function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/api/logout',
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem('accessToken')
+                },
+                success: function () {
+                    // Clear the token from the session (if needed)
+                    // sessionStorage.removeItem('your_token_key');
+                    // Update the login status
+                    sessionStorage. clear()
+                    updateLoginStatus();
+                },
+                error: function (error) {
+                    // Handle errors if necessary
+                    console.error('Logout error:', error);
+                }
+            });
+        });
+    });
         $(function() {
             var selectedClass = "";
             $("p").click(function(){
@@ -247,40 +252,92 @@ https://templatemo.com/tm-571-hexashop
 </html>
 
 <script>
-$(document).ready(function () {
-        // Function to handle the form submission
-        $('#registrationForm').submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
+    $(document).ready(function() {
+        // Function to get the 'id' parameter from the URL
+        function getUrlParameter(name) {
+            var results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            } else {
+                return decodeURI(results[1]) || 0;
+            }
+        }
 
-            // Get the form data
-            var formData = {
-                name: $('input[name="name"]').val(),
-                username: $('input[name="username"]').val(),
-                email: $('input[name="email"]').val(),
-                address: $('input[name="address"]').val(),
-                phone_nb: $('input[name="phone_nb"]').val(),
-                birthdate: $('input[name="birthdate"]').val(),
-                password: $('input[name="password"]').val()
-            };
-
-            // Make the AJAX POST request
+        // Function to get tile information using AJAX
+        function getTileInformation(tileId) {
             $.ajax({
-                type: 'POST',
-                url: '/api/auth/register',
-                data: formData,
-                dataType: 'json', // Set the expected response data type
-                success: function (response) {
-                    // Handle the success response here
-                    sessionStorage.setItem('accessToken',response.access_token);
-                    window.location.href = "/"; 
-                    // You can show a success message to the user or redirect to another page
-                },
-                error: function (error) {
-                    // Handle the error response here
-                    console.error('Registration error:', error);
-                    // You can show an error message to the user or handle specific errors
+                type: 'GET',
+                url: '/api/addTile/' + tileId,
+                success: function(data) {
+                    console.log(data);
+                    var imageUrl = '{{ asset('storage') }}/' + data.tiles.picture;
+                    var ok = `<div class="row">
+                <div class="col-lg-8">
+                <div class="left-images">
+                    <img src="`+imageUrl+`" alt="">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="right-content">
+                    <h4>${data.tiles.name}</h4>
+                    <span class="price">${data.tiles.price_retail}$</span>
+                    
+                    <span style="border-bottom: 1px solid #eee; padding-bottom: 20px;">${data.tiles.description}</span>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                                    <span>Color: <div id="colorBox"></div></span>
+                                    
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Size: ${data.tiles.size}</span>
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Quantity: ${data.tiles.quantity}</span>
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Packing: ${data.tiles.packing}</span>
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Origin: ${data.tiles.origin}</span>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            </div>`;
+            $("#product-container").html(ok);
+            setColorBoxColor(data.tiles.color);
+                    },
+                error: function(error) {
+                    console.error('Error fetching tile information:', error);
+                    // You can handle errors here, e.g., show an error message to the user
                 }
             });
-        });
+        }
+
+        // Get the 'id' parameter from the URL
+        var tileId = getUrlParameter('id');
+
+        if (tileId) {
+            // Call the function to get tile information based on the 'id' parameter
+            getTileInformation(tileId);
+        } else {
+            // If 'id' parameter is not found, you can handle the error or redirect the user
+            console.error('Tile ID not found in URL.');
+            // You can show an error message or redirect the user to a different page
+        }
     });
+    function setColorBoxColor(hexColor) {
+        $('#colorBox').css('background-color', hexColor);
+    }
 </script>
+
+<style>
+    /* Style for the color box */
+    #colorBox {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #000;
+        display: inline-block;
+        margin-left: 10px;
+    }
+</style>

@@ -58,8 +58,8 @@ https://templatemo.com/tm-571-hexashop
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
-                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
+                            <li class="scroll-to-section"><a href="/tiles">Tiles</a></li>
+                            <li class="scroll-to-section"><a href="/sanitaryWare">Sanitary Ware</a></li>
                             <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
@@ -73,16 +73,12 @@ https://templatemo.com/tm-571-hexashop
                             <li class="submenu">
                                 <a href="javascript:;">Features</a>
                                 <ul>
-                                    <li><a href="#">Features Page 1</a></li>
-                                    <li><a href="#">Features Page 2</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                                    <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                                    <li><a href="/tileFinder">Tile Finder</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
-                            
-                            <!-- Display the user's name when the user is logged in -->
-                            <li>{{ Auth::user()->name }}</li>
+                            <li class="login-user"><a href="/login">Login</a></li>
+                            <li id="loggedInUserContent" style="display: none;"><a href="#" id="logoutLink">Logout</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -826,7 +822,48 @@ https://templatemo.com/tm-571-hexashop
     <script src="assets/js/custom.js"></script>
 
     <script>
+    $(document).ready(function () {
+        // Function to check if a token exists in the session
+        function isUserLoggedIn() {
+            return !!sessionStorage.getItem('accessToken'); // Replace 'your_token_key' with the actual key you use to store the token in the session.
+        }
 
+        // Function to show/hide the appropriate links based on the login status
+        function updateLoginStatus() {
+            if (isUserLoggedIn()) {
+                $('.login-user').hide(); // Hide the "Login" link
+                $('#loggedInUserContent').show(); // Show the content for logged-in user
+            } else {
+                $('.login-user').show(); // Show the "Login" link
+                $('#loggedInUserContent').hide(); // Hide the content for logged-in user
+            }
+        }
+
+        // Initial check on page load
+        updateLoginStatus();
+        // Click event for the "Logout" link
+        $('#logoutLink').on('click', function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/api/logout',
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem('accessToken')
+                },
+                success: function () {
+                    // Clear the token from the session (if needed)
+                    // sessionStorage.removeItem('your_token_key');
+                    // Update the login status
+                    sessionStorage. clear()
+                    updateLoginStatus();
+                },
+                error: function (error) {
+                    // Handle errors if necessary
+                    console.error('Logout error:', error);
+                }
+            });
+        });
+    });
         $(function() {
             var selectedClass = "";
             $("p").click(function(){

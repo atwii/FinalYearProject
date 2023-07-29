@@ -14,9 +14,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
 Route::get('/', function () {
     return view('index');
+});
+Route::get('/tileYourFloor',function(){
+    return view('tileYourFloor');
+});
+Route::get('/tileFinder',function(){
+    return view('tileFinder');
+});
+Route::get('/tiles',function(){
+    return view('tiles');
+});
+Route::get('/sanitaryWare',function(){
+    return view('sanitaryWare');
+});
+Route::get('/sanitaryInfo',function(){
+    return view('sanitaryInfo');
+});
+
+Route::get('/tileInfo',function(){
+    return view('tileInfo');
 });
 Route::get('/login',function(){
     return view('login');

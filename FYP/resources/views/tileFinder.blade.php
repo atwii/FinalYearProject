@@ -29,6 +29,8 @@ TemplateMo 571 Hexashop
 https://templatemo.com/tm-571-hexashop
 
 -->
+<script src="assets/js/jquery-2.1.0.min.js"></script>
+
     </head>
     
     <body>
@@ -89,60 +91,42 @@ https://templatemo.com/tm-571-hexashop
         </div>
     </header>
     <!-- ***** Subscribe Area Ends ***** -->
-    <div class="main-banner" id="top">
-        <div class="container-fluid">
-        <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign up your account</h4>
-                                    <form  id="registrationForm">
-                                        <div class="form-group">
-                                            <label><strong>Name</strong></label>
-                                            <input type="text" class="form-control" name="name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Username</strong></label>
-                                            <input type="text" class="form-control" name="username">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control" name="email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Address</strong></label>
-                                            <input type="text" class="form-control" name="address">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Phone Number</strong></label>
-                                            <input type="number" class="form-control" name="phone_nb">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Birth Date</strong></label>
-                                            <input type="date" class="form-control" name="birthdate">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control" name="password">
-                                        </div>
-                                        <div class="text-center mt-4">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
-                                        </div>
-                                    </form>
-                                    <div class="new-account mt-3">
-                                        <p>Already have an account? <a class="text-primary" href="./login">Sign in</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+   
+    <div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner-content">
+                        <h2>Find Tiles Similar to Yours</h2>
+                        <span>Upload an Image &amp; Find Tiles Similar to Yours</span>
                     </div>
                 </div>
             </div>
-</div></div>
+        </div>
+    </div>
+    <section class="our-services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Upload an Image of Your Tile</h2>
+                        <form id="upload-form" enctype="multipart/form-data">
+                            <input type="file" id="image-file" name="image" accept="image/*">
+                            <button type="submit" id="form-submit" class="main-dark-button">Upload</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+                
+    <section class="section" id="products">
+        <div class="container">
+            <div class="row" id="addProducts">
 
-
+            </div>
+        </div>
+    </section>
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
@@ -246,41 +230,108 @@ https://templatemo.com/tm-571-hexashop
   </body>
 </html>
 
+
 <script>
+
+
 $(document).ready(function () {
-        // Function to handle the form submission
-        $('#registrationForm').submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
+        // Function to check if a token exists in the session
+        function isUserLoggedIn() {
+            return !!sessionStorage.getItem('accessToken'); // Replace 'your_token_key' with the actual key you use to store the token in the session.
+        }
 
-            // Get the form data
-            var formData = {
-                name: $('input[name="name"]').val(),
-                username: $('input[name="username"]').val(),
-                email: $('input[name="email"]').val(),
-                address: $('input[name="address"]').val(),
-                phone_nb: $('input[name="phone_nb"]').val(),
-                birthdate: $('input[name="birthdate"]').val(),
-                password: $('input[name="password"]').val()
-            };
+        // Function to show/hide the appropriate links based on the login status
+        function updateLoginStatus() {
+            if (isUserLoggedIn()) {
+                $('.login-user').hide(); // Hide the "Login" link
+                $('#loggedInUserContent').show(); // Show the content for logged-in user
+            } else {
+                $('.login-user').show(); // Show the "Login" link
+                $('#loggedInUserContent').hide(); // Hide the content for logged-in user
+            }
+        }
 
-            // Make the AJAX POST request
+        // Initial check on page load
+        updateLoginStatus();
+        // Click event for the "Logout" link
+        $('#logoutLink').on('click', function (event) {
+            event.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: '/api/auth/register',
-                data: formData,
-                dataType: 'json', // Set the expected response data type
-                success: function (response) {
-                    // Handle the success response here
-                    sessionStorage.setItem('accessToken',response.access_token);
-                    window.location.href = "/"; 
-                    // You can show a success message to the user or redirect to another page
+                url: '/api/logout',
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem('accessToken')
+                },
+                success: function () {
+                    // Clear the token from the session (if needed)
+                    // sessionStorage.removeItem('your_token_key');
+                    // Update the login status
+                    sessionStorage. clear()
+                    updateLoginStatus();
                 },
                 error: function (error) {
-                    // Handle the error response here
-                    console.error('Registration error:', error);
-                    // You can show an error message to the user or handle specific errors
+                    // Handle errors if necessary
+                    console.error('Logout error:', error);
                 }
             });
         });
     });
+
+    $('#form-submit').on('click', function(event) {
+    event.preventDefault();
+    var imageFile = $('#image-file')[0].files[0];
+    if (!imageFile) {
+      alert("Please select an image file.");
+      return;
+    }
+    var formData = new FormData();
+    formData.append('image', imageFile);
+    $.ajax({
+      type: 'POST',
+      url: '/api/getSimilarTiles',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        var tableBody = $('#addProducts');
+        console.log(response);
+            var usersArray = [response.tiles];
+            // Loop through the users and populate the table rows
+            tableBody.html('');
+            var userRow = '';
+            usersArray.forEach(function (user) {
+                
+                for (const key in user) {
+                    var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
+                    userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
+                    userRow += '<div class="down-content"><a href="/tileInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+                    
+                }
+            });
+            tableBody.append(userRow);
+      },
+      error: function(error) {
+        console.error('Prediction error:', error);
+      }
+    });
+    });
 </script>
+
+<style>
+button {
+    height: 44px;
+    display: inline-block;
+    text-align: center;
+    line-height: 44px;
+    background-color: #2a2a2a;
+    box-shadow: none;
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all 0.3s;
+}
+button:hover {
+    background-color: #fff;
+    border: 1px solid #2a2a2a;
+    color: #2a2a2a;
+}
+</style>
