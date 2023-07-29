@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>Hexashop Ecommerce HTML CSS Template</title>
 
@@ -262,7 +263,11 @@ $(document).ready(function () {
                 birthdate: $('input[name="birthdate"]').val(),
                 password: $('input[name="password"]').val()
             };
-
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             // Make the AJAX POST request
             $.ajax({
                 type: 'POST',
