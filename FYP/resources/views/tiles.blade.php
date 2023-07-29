@@ -91,39 +91,34 @@ https://templatemo.com/tm-571-hexashop
         </div>
     </header>
     <!-- ***** Subscribe Area Ends ***** -->
-    <div class="main-banner" id="top">
-        <div class="container-fluid">
-            <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign in your account</h4>
-                                    <form id="login-form">
-                                        <div class="form-group">
-                                            <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control">
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me in</button>
-                                        </div>
-                                    </form>
-                                    <div class="new-account mt-3">
-                                        <p>Don't have an account? <a class="text-primary" href="./register">Sign up</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner-content">
+                        <h2>Our Products</h2>
                     </div>
                 </div>
             </div>
-</div></div>
+        </div>
+    </div>
+    
+    <section class="section" id="products">
+    <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Our Tiles</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row" id="addProducts">
 
+            </div>
+        </div>
+    </section>
 
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -268,5 +263,31 @@ https://templatemo.com/tm-571-hexashop
                 }
             });
         });
+        var tableBody = $('#addProducts');
+        $.ajax({
+                type: 'GET',
+                url: '/api/addTile',
+                success: function(data) {
+                    console.log(data);
+                    var usersArray = [data.tiles];
+                    tableBody.html('');
+                    var userRow = '';
+                    usersArray.forEach(function (user) {
+                        
+                        for (const key in user) {
+                            var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
+                            userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
+                            userRow += '<div class="down-content"><a href="/tileInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+                            
+                        }
+                    });
+                    tableBody.append(userRow);
+                    },
+                error: function(error) {
+                    console.error('Error fetching tile information:', error);
+                    // You can handle errors here, e.g., show an error message to the user
+                }
+            });
+
     });
 </script>

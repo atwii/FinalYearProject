@@ -29,8 +29,6 @@ TemplateMo 571 Hexashop
 https://templatemo.com/tm-571-hexashop
 
 -->
-<script src="assets/js/jquery-2.1.0.min.js"></script>
-
     </head>
     
     <body>
@@ -79,7 +77,8 @@ https://templatemo.com/tm-571-hexashop
                                     <li><a href="/tileFinder">Tile Finder</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
+                            <li class="login-user"><a href="/login">Login</a></li>
+                            <li id="loggedInUserContent" style="display: none;"><a href="#" id="logoutLink">Logout</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -90,41 +89,24 @@ https://templatemo.com/tm-571-hexashop
             </div>
         </div>
     </header>
-    <!-- ***** Subscribe Area Ends ***** -->
-    <div class="main-banner" id="top">
-        <div class="container-fluid">
-            <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign in your account</h4>
-                                    <form id="login-form">
-                                        <div class="form-group">
-                                            <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control">
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me in</button>
-                                        </div>
-                                    </form>
-                                    <div class="new-account mt-3">
-                                        <p>Don't have an account? <a class="text-primary" href="./register">Sign up</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
                 </div>
             </div>
-</div></div>
+        </div>
+    </div>
 
 
+    <section class="section" id="product">
+        <div class="container" id="product-container">
+            
+        </div>
+    </section>
+    
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
@@ -208,7 +190,48 @@ https://templatemo.com/tm-571-hexashop
     <script src="assets/js/custom.js"></script>
 
     <script>
+    $(document).ready(function () {
+        // Function to check if a token exists in the session
+        function isUserLoggedIn() {
+            return !!sessionStorage.getItem('accessToken'); // Replace 'your_token_key' with the actual key you use to store the token in the session.
+        }
 
+        // Function to show/hide the appropriate links based on the login status
+        function updateLoginStatus() {
+            if (isUserLoggedIn()) {
+                $('.login-user').hide(); // Hide the "Login" link
+                $('#loggedInUserContent').show(); // Show the content for logged-in user
+            } else {
+                $('.login-user').show(); // Show the "Login" link
+                $('#loggedInUserContent').hide(); // Hide the content for logged-in user
+            }
+        }
+
+        // Initial check on page load
+        updateLoginStatus();
+        // Click event for the "Logout" link
+        $('#logoutLink').on('click', function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/api/logout',
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem('accessToken')
+                },
+                success: function () {
+                    // Clear the token from the session (if needed)
+                    // sessionStorage.removeItem('your_token_key');
+                    // Update the login status
+                    sessionStorage. clear()
+                    updateLoginStatus();
+                },
+                error: function (error) {
+                    // Handle errors if necessary
+                    console.error('Logout error:', error);
+                }
+            });
+        });
+    });
         $(function() {
             var selectedClass = "";
             $("p").click(function(){
@@ -228,45 +251,74 @@ https://templatemo.com/tm-571-hexashop
   </body>
 </html>
 
-
 <script>
-    $(document).ready(function () {
-        // Add event listener for form submission
-        $("#login-form").submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission behavior
+    $(document).ready(function() {
+        // Function to get the 'id' parameter from the URL
+        function getUrlParameter(name) {
+            var results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            } else {
+                return decodeURI(results[1]) || 0;
+            }
+        }
 
-            // Get the form data
-            var formData = {
-                email: $("input[type='email']").val(),
-                password: $("input[type='password']").val()
-            };
-            var token = sessionStorage.getItem("accessToken");
-
-            // Make the AJAX call
+        // Function to get tile information using AJAX
+        function getTileInformation(tileId) {
             $.ajax({
-                type: "POST",
-                url: "/api/auth/login",
-                data: formData,
-                success: function (response) {
-                    // Assuming the response contains isAdmin key with a number value
-                    var isAdmin = response.isAdmin;
-                    sessionStorage.setItem('accessToken',response.access_token);
-
-                    // Check the isAdmin value and redirect accordingly
-                    if (isAdmin === 2) {
-                        // Redirect to admin page
-                        window.location.href = "/admin"; // Replace "/admin" with your admin page URL
-                        //console.log(response);
-                    } else {
-                        // Redirect to regular user page
-                        window.location.href = "/"; // Replace "/user" with your regular user page URL
-                    }
-                },
-                error: function (error) {
-                    console.error("Login error:", error);
-                    // Handle login error, show error message, etc.
+                type: 'GET',
+                url: '/api/addSanitary/' + tileId,
+                success: function(data) {
+                    console.log(data);
+                    var imageUrl = '{{ asset('storage') }}/' + data.sanitarywares.picture;
+                    var ok = `<div class="row">
+                <div class="col-lg-8">
+                <div class="left-images">
+                    <img src="`+imageUrl+`" alt="">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="right-content">
+                    <h4>${data.sanitarywares.name}</h4>
+                    <span class="price">${data.sanitarywares.price_retail}$</span>
+                    
+                    <span style="border-bottom: 1px solid #eee; padding-bottom: 20px;">${data.sanitarywares.description}</span>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Size: ${data.sanitarywares.size}</span>
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Quantity: ${data.sanitarywares.quantity}</span>
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Packing: ${data.sanitarywares.packing}</span>
+                    </div>
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <span>Origin: ${data.sanitarywares.origin}</span>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            </div>`;
+            $("#product-container").html(ok);
+                    },
+                error: function(error) {
+                    console.error('Error fetching tile information:', error);
+                    // You can handle errors here, e.g., show an error message to the user
                 }
             });
-        });
+        }
+
+        // Get the 'id' parameter from the URL
+        var tileId = getUrlParameter('id');
+
+        if (tileId) {
+            // Call the function to get tile information based on the 'id' parameter
+            getTileInformation(tileId);
+        } else {
+            // If 'id' parameter is not found, you can handle the error or redirect the user
+            console.error('Tile ID not found in URL.');
+            // You can show an error message or redirect the user to a different page
+        }
     });
 </script>

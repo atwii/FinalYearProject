@@ -9,17 +9,18 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
     public function UserRegistration(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|min:4|max:25|regex:/^(?=.{4,25}$)(?![@.0-9])(?!.*[.@]{2})[a-z0-9.@]+(?<![.@])$/u',
+            'username' => 'required|string|min:4|max:25|regex:/^(?=.*[A-Za-z0-9]).{4,}$/u',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:10|max:255|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).{4,}$/',
         ]);
-
+        
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json([
@@ -73,12 +74,12 @@ class UserController extends Controller
 
     }
 
-    public function logout(Request $request) 
+    public function logoutUser(Request $request) 
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/login');
+        auth()->user()->tokens()->delete();
+        return [
+            'message' => 'user logged out'
+        ];
     }
 
 }

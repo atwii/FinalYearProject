@@ -58,8 +58,8 @@ https://templatemo.com/tm-571-hexashop
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
-                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
+                            <li class="scroll-to-section"><a href="/tiles">Tiles</a></li>
+                            <li class="scroll-to-section"><a href="/sanitaryWare">Sanitary Ware</a></li>
                             <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
@@ -73,10 +73,8 @@ https://templatemo.com/tm-571-hexashop
                             <li class="submenu">
                                 <a href="javascript:;">Features</a>
                                 <ul>
-                                    <li><a href="#">Features Page 1</a></li>
-                                    <li><a href="#">Features Page 2</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                                    <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                                    <li><a href="/tileFinder">Tile Finder</a></li>
                                 </ul>
                             </li>
                             <li class="scroll-to-section"><a href="#explore">Explore</a></li>
@@ -100,18 +98,34 @@ https://templatemo.com/tm-571-hexashop
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <h4 class="text-center mb-4">Sign up your account</h4>
-                                    <form action="index.html">
+                                    <form  id="registrationForm">
+                                        <div class="form-group">
+                                            <label><strong>Name</strong></label>
+                                            <input type="text" class="form-control" name="name">
+                                        </div>
                                         <div class="form-group">
                                             <label><strong>Username</strong></label>
-                                            <input type="text" class="form-control" placeholder="username">
+                                            <input type="text" class="form-control" name="username">
                                         </div>
                                         <div class="form-group">
                                             <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control" placeholder="hello@example.com">
+                                            <input type="email" class="form-control" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Address</strong></label>
+                                            <input type="text" class="form-control" name="address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Phone Number</strong></label>
+                                            <input type="number" class="form-control" name="phone_nb">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Birth Date</strong></label>
+                                            <input type="date" class="form-control" name="birthdate">
                                         </div>
                                         <div class="form-group">
                                             <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control" value="Password">
+                                            <input type="password" class="form-control" name="password">
                                         </div>
                                         <div class="text-center mt-4">
                                             <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
@@ -231,3 +245,42 @@ https://templatemo.com/tm-571-hexashop
 
   </body>
 </html>
+
+<script>
+$(document).ready(function () {
+        // Function to handle the form submission
+        $('#registrationForm').submit(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the form data
+            var formData = {
+                name: $('input[name="name"]').val(),
+                username: $('input[name="username"]').val(),
+                email: $('input[name="email"]').val(),
+                address: $('input[name="address"]').val(),
+                phone_nb: $('input[name="phone_nb"]').val(),
+                birthdate: $('input[name="birthdate"]').val(),
+                password: $('input[name="password"]').val()
+            };
+
+            // Make the AJAX POST request
+            $.ajax({
+                type: 'POST',
+                url: '/api/auth/register',
+                data: formData,
+                dataType: 'json', // Set the expected response data type
+                success: function (response) {
+                    // Handle the success response here
+                    console.log('Registration successful:', response);
+                    window.location.href = "/"; 
+                    // You can show a success message to the user or redirect to another page
+                },
+                error: function (error) {
+                    // Handle the error response here
+                    console.error('Registration error:', error);
+                    // You can show an error message to the user or handle specific errors
+                }
+            });
+        });
+    });
+</script>
