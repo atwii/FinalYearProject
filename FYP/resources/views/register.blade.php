@@ -271,7 +271,7 @@ $(document).ready(function () {
                 dataType: 'json', // Set the expected response data type
                 success: function (response) {
                     // Handle the success response here
-                    console.log('Registration successful:', response);
+                    sessionStorage.setItem('accessToken',response.access_token);
                     window.location.href = "/"; 
                     // You can show a success message to the user or redirect to another page
                 },
