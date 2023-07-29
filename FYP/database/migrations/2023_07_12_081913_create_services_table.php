@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('picture');
             $table->unsignedBigInteger('seeker');
             $table->foreign('seeker')->references('id')->on('users');
-            $table->unsignedBigInteger('provider');
+            $table->unsignedBigInteger('provider')->nullable();
             $table->foreign('provider')->references('id')->on('users');
             $table->string('status');
             $table->longText('address');

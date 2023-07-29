@@ -29,4 +29,10 @@ class Service extends Model
     {
         return $this->belongsTo(User::class, 'provider');
     }
+
+    public function images(){
+
+        return $this->hasMany('App\Models\service_images','service','id');
+   }
+
 }
