@@ -57,4 +57,29 @@ Route::get('/servicesAdmin',function () {
 //Route::post('/users', [AdminController::class, 'store'])->name('CreateUser');
 
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/services', function () {
+    return view('services');
+});
+
+Route::get('/newService', function () {
+    return view('createservice');
+});
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::post('/postService','HomeController@postService')->name('postService');
+
+Route::get('/listServices','HomeController@listServices')->name('listServices');
+
 
