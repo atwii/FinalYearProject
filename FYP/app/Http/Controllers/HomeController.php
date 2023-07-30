@@ -6,6 +6,7 @@ use App\Models\Service;
 use App\Models\service_images;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -61,11 +62,16 @@ class HomeController extends Controller
     public function listServices(){
 
 
+       $user= auth()->user()->tokens();
+       dd($user);
         //if role
 
-        // $user=auth::user();
+    //     $user=auth('sanctum')->user();
 
+    //    dd($user);
         // if($user->role==retail){
+
+        
 
             $services=Service::with('images')->get();
 
@@ -83,13 +89,53 @@ class HomeController extends Controller
 
     }
 
-    public function updateService(){
+    public function updateService(Request $request){
 
+        $service=Service::where('id','=',$request->serviceId)->first();
+
+        
+        $service->description=$request->description1.":".$request->description2;
+        $service->address=$request->address;
+       
+
+        if($request->hasfile('filenames'))
+         {
+
+            service_images::where('service','=',$request->serviceId)->delete();
+
+            $service->picture="available";
+
+            foreach($request->file('filenames') as $file)
+            {
+                $name = time().rand(1,50).'.'.$file->extension();
+                $file->move(public_path('files'), $name);  
+                $files[] = $name;  
+                
+                $image=new service_images();
+                $image->path=$name;
+                $image->service=$request->serviceId;
+                $image->save();
+
+            }
+         }
+
+         $service->save();
+
+
+         return redirect()->back()->with('message','Action completed Successfully');
 
     }
 
 
-    public function deleteService(){
+    public function deleteService(Request $request){
         
+        Log::info($request->serviceId);
+        
+        service_images::where('service','=',$request->serviceId)->delete();
+
+        Service::where('id','=',$request->serviceId)->delete();
+
+        return redirect()->back()->with('message','Action completed Successfully');
+
     }
 }

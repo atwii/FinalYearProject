@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Route::get('/', function () {
     return view('index');
 });
@@ -98,6 +99,13 @@ Route::get('/', function () {
 
 Route::post('/postService','HomeController@postService')->name('postService');
 
+
+Route::group(['middleware' => ['web', 'auth']], function () {
 Route::get('/listServices','HomeController@listServices')->name('listServices');
+});
+Route::post('/updateService','HomeController@updateService')->name('updateService');
+
+Route::post('/deleteService','HomeController@deleteService')->name('deleteService');
+
 
 

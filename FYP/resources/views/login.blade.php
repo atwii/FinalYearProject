@@ -259,7 +259,7 @@ https://templatemo.com/tm-571-hexashop
                         //console.log(response);
                     } else {
                         // Redirect to regular user page
-                        window.location.href = "/"; // Replace "/user" with your regular user page URL
+                        window.location.href = "/listServices"; // Replace "/user" with your regular user page URL
                     }
                 },
                 error: function (error) {

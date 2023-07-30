@@ -4,6 +4,95 @@
   <head>
 <style>
 
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: block;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.file-label:hover {
+  background-color: #f0f0f0;
+}
+
+.file-name {
+  margin-left: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+
+
+
+
 .wrap {
   height: 100%;
   display: flex;
@@ -52,11 +141,11 @@ background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 10
   transform: translateY(-6px);
 }
 
-button:hover::before, button:focus::before {
+.button:hover::before, button:focus::before {
   opacity: 1;
 }
 
-button::after {
+.button::after {
   content: '';
   width: 30px; height: 30px;
   border-radius: 100%;
@@ -69,7 +158,7 @@ button::after {
   animation: ring 1.5s infinite;
 }
 
-button:hover::after, button:focus::after {
+.button:hover::after, button:focus::after {
   animation: none;
   display: none;
 }
@@ -204,14 +293,16 @@ https://templatemo.com/tm-571-hexashop
               <a href="files/{{ $image->path}}"  class="image-popup-vertical-fit " target="_blank">
               <img src="files/{{ $image->path }}" alt="{{ $image->caption }}" width="200" height="150">
               </a>
+              <!-- Button trigger modal -->
+
               @endforeach
               <div class="dropdown">
-                <button style="float:right" class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown button
+                <button style="float:right" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Action
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Update</a>
-                  <a class="dropdown-item" href="#">Delete</a>
+                  <a class="dropdown-item" onclick="openUpdateModal('{{$service->id}}','{{$service->type}}','{{$service->description}}','{{$service->address}}')">Update</a>
+                  <a class="dropdown-item" onclick="openDeleteModal('{{$service->id}}')" >Delete</a>
                   <a class="dropdown-item" href="#">Bid</a>
                 </div>
               </div>
@@ -221,6 +312,94 @@ https://templatemo.com/tm-571-hexashop
           @endforeach
         </div>
 
+
+        <!-- Modal -->
+<div class="modal fade" id="updateModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <form action="{{ route("updateService") }}" method="POST" enctype="multipart/form-data">
+
+          @csrf
+
+          <div class="form-group">
+
+            <input id="service-id" name="serviceId" type="hidden" value="">
+
+            <label for="readonly-input">Type</label>
+            <input type="text" id="readonly-input" value="Readonly Value" readonly>
+          </div>
+          <div class="form-group">
+            <label for="description-input">Description</label>
+            <input type="text" name="description1" id="description-input" placeholder="Enter description" required>
+          </div>
+          <div class="form-group">
+            <label for="textarea-input">More Details</label>
+            <textarea id="textarea-input" name="description2" placeholder="Enter text"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="address-input">Address</label>
+            <input type="text" id="address-input" name="address" placeholder="Enter address" required>
+          </div>
+          <div class="form-group">
+            <label for="file-input">Choose File</label>
+            <input name="filenames[]" type="file" id="file-input">
+          </div>
+          
+        
+
+
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this service?
+            </div>
+
+            <form action="{{ route("deleteService") }}" method="POST" enctype="multipart/form-data">
+
+              @csrf
+              <input id="service_todelete-id" name="serviceId" type="hidden" value="">
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
         
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -319,6 +498,43 @@ https://templatemo.com/tm-571-hexashop
                 
             });
         });
+
+        function openUpdateModal(id,type,description,address){
+
+          $('#updateModalCenter').modal('show');
+
+
+          document.getElementById("service-id").value=id;
+          document.getElementById("readonly-input").value=type;
+          document.getElementById("address-input").value=address;
+
+
+          const desc = description.split(":");
+          document.getElementById("description-input").value=desc[0];
+
+          if (!desc[1].length) {
+          document.getElementById("textarea-input").value=desc[1];
+          }else{
+            document.getElementById("textarea-input").value;
+          }
+
+         
+
+
+          
+        }
+
+        function openDeleteModal(id){
+
+            $('#deleteModal').modal('show');
+
+
+            console.log(id);
+            document.getElementById("service_todelete-id").value=id;
+           
+
+        }
+
 
     </script>
 
