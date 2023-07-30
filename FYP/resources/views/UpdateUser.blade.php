@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -278,7 +280,11 @@
     // Run this function when the page is loaded
     $(document).ready(function () {
         var token = sessionStorage.getItem("accessToken");
-
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         var queryString = window.location.search;
         var params = new URLSearchParams(queryString);
         var id = params.get('id');

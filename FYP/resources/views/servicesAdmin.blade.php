@@ -3,6 +3,8 @@
 <html lang="en">
 
 <head>
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -260,7 +262,11 @@
     $(document).ready(function () {
         // AJAX GET request to fetch all users
         var token = sessionStorage.getItem("accessToken");
-
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         $.ajax({
             url: '/api/getServices', // Replace with your API endpoint URL
             type: 'GET',

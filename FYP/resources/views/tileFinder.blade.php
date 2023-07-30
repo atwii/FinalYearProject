@@ -2,6 +2,7 @@
 <html lang="en">
 
   <head>
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -250,7 +251,11 @@ $(document).ready(function () {
                 $('#loggedInUserContent').hide(); // Hide the content for logged-in user
             }
         }
-
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         // Initial check on page load
         updateLoginStatus();
         // Click event for the "Logout" link
