@@ -74,6 +74,20 @@ class UserController extends Controller
 
     }
 
+
+    public function getUser(){
+
+        
+        $user=auth()->user();
+
+        return response()->json([
+            'id'=>$user->id,
+            'role'=>$user->role,
+            'name'=>$user->username,
+        ], 200);
+
+    }
+
     public function logoutUser(Request $request) 
     {
         auth()->user()->tokens()->delete();
@@ -81,5 +95,6 @@ class UserController extends Controller
             'message' => 'user logged out'
         ];
     }
+    
 
 }

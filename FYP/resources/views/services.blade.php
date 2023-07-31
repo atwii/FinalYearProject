@@ -2,7 +2,39 @@
 <html lang="en">
 
   <head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+
+
+/* Reset some default button styles */
+button {
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Styling for the rounded button */
+.rounded-button {
+    border-radius: 20px; /* Adjust the value to change the roundness */
+    padding: 12px 20px; /* Adjust the values to change the button size */
+    background-color: #3498db; /* Set the background color */
+    color: #fff; /* Set the text color */
+    font-size: 16px; /* Set the font size */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    transition: background-color 0.2s ease; /* Add a smooth transition on hover */
+}
+
+/* Hover effect */
+.rounded-button:hover {
+    background-color: #2980b9; /* Change the background color on hover */
+}
+
+
+
+
 
 
 .modal {
@@ -284,18 +316,39 @@ https://templatemo.com/tm-571-hexashop
     
 
         <div class="card" style="margin-bottom: 5%">
-            <h5 class="card-header"> {{$service->type}} <span class="badge badge-info">{{$service->status}}</span></h5>
+            <h5 class="card-header-service"> {{$service->type}} <span class="badge badge-info">{{$service->status}}</span></h5>
             <div class="card-body">
+
               <h5 class="card-title">{{$service->description}}</h5>
               <p class="card-text">{{$service->address}}</p>
+
+              <p class="seeker-value" hidden>{{$service->seeker}}</p>
+              <p class="service-type" hidden>{{$service->type}}</p>
 
               @foreach ($service->images as $image)
               <a href="files/{{ $image->path}}"  class="image-popup-vertical-fit " target="_blank">
               <img src="files/{{ $image->path }}" alt="{{ $image->caption }}" width="200" height="150">
               </a>
-              <!-- Button trigger modal -->
-
               @endforeach
+
+              <div class="card-body">
+                <div class="table-responsive" id="table-container">
+                    {{-- <table class="table student-data-table m-t-20">
+                        <thead>
+                            <tr>
+                                <th>Bid</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bids-table-body">
+
+                        </tbody>
+                    </table> --}}
+                </div>
+            </div>
+
+            <button class="rounded-button"  data-my-variable="{{$service->id}}"><i class="fa fa-money"></i></button>
+
               <div class="dropdown">
                 <button style="float:right" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Action
@@ -303,7 +356,7 @@ https://templatemo.com/tm-571-hexashop
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" onclick="openUpdateModal('{{$service->id}}','{{$service->type}}','{{$service->description}}','{{$service->address}}')">Update</a>
                   <a class="dropdown-item" onclick="openDeleteModal('{{$service->id}}')" >Delete</a>
-                  <a class="dropdown-item" href="#">Bid</a>
+                  <a class="dropdown-item" onclick="openBidModal('{{$service->id}}')">Bid</a>
                 </div>
               </div>
             </div>
@@ -318,7 +371,7 @@ https://templatemo.com/tm-571-hexashop
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Update Service</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -400,6 +453,47 @@ https://templatemo.com/tm-571-hexashop
           </div>
         </div>
       </div>
+
+
+              <!-- Modal -->
+<div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle" style="text-align: center;width: 100%;">New Bid</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <form action="{{ route("bidService") }}" method="POST" enctype="multipart/form-data">
+
+          @csrf
+
+          <div class="form-group">
+
+            <input id="service_tobid-id" name="serviceId" type="hidden" value="">
+
+            <input id="bidder" name="bidder" type="hidden" value="">
+
+            
+            <input type="text" id="bid-input" name="bidPrice" value="">
+          </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+        
+        <button style="width:100%;" type="submit" class="btn btn-primary">Bid</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
         
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -535,7 +629,248 @@ https://templatemo.com/tm-571-hexashop
 
         }
 
+        function openBidModal(id){
 
+            $('#bidModal').modal('show');
+
+
+            console.log(id);
+            document.getElementById("service_tobid-id").value=id;
+
+
+        }
+
+
+
+
+         // Run this function when the page is loaded
+    $(document).ready(function () {
+
+
+      
+
+
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+
+        var token = sessionStorage.getItem("accessToken");
+        console.log(token);
+        // AJAX GET request to fetch all users
+        $.ajax({
+            url: '/api/getUser', // Replace with your API endpoint URL
+            type: 'GET',
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            dataType: 'json',
+            success: function (data) {
+                // Handle the success response here
+                console.log(data);
+                accessLevel(data);
+                
+            },
+            error: function (error) {
+                // Handle any errors that occur during the request
+                
+                console.error('Error fetching users:', error);
+            }
+        });
+
+        
+
+        // Function to display users in the specified container
+        function accessLevel(user) {
+            
+          if (user.role === 1 || user.role===4) {
+            // // Remove the 'Update' item
+            // $(".dropdown-item:contains('Update')").remove();
+            // Remove the 'Bid' item
+            $(".dropdown-item:contains('Bid')").remove();
+
+            // Loop through each service card and hide those where $service->Seeker is not equal to 1
+      $('.card').each(function() {
+                    const seekerValue = parseInt($(this).find('.seeker-value').text());
+                    console.log(seekerValue);
+                    if (seekerValue !== user.id) {
+                        $(this).hide();
+                    }
+                });
+           
+
+          } else if (user.role === 2) {
+            // // Remove the 'Bid' item
+            // $(".dropdown-item:contains('Bid')").remove();
+          } else if (user.role === 3 || user.role==5) {
+            // // Remove the 'Bid' item and the 'Update' item
+            // $(".dropdown-item:contains('Bid'), .dropdown-item:contains('Update')").remove();
+            // Remove the 'Update' and 'Delete' item
+            $(".dropdown-item:contains('Update'), .dropdown-item:contains('Delete')").remove();
+            document.getElementById("bidder").value=user.id;
+
+            if(user.role===3){
+
+              $('.card').each(function() {
+                    const serviceType = $(this).find('.service-type').text();
+                    // console.log(serviceType);
+                    // Predefined string to compare with
+                    const predefinedString = "Sangariye";
+
+                    if (serviceType !== predefinedString) {
+                        $(this).hide();
+                        // console.log("hide");
+                    }
+                });
+              
+
+            }else{
+
+              $('.card').each(function() {
+                    const serviceType = $(this).find('.service-type').text();
+                    // console.log(serviceType);
+                    // Predefined string to compare with
+                    const predefinedString = "Teblyt";
+
+                    if (serviceType !== predefinedString) {
+                        $(this).hide();
+                        // console.log("hide");
+                    }
+                });
+              
+
+
+            }
+
+
+    }
+            
+        }
+
+
+
+
+        $(document).on('click', '.rounded-button', function () { 
+          
+    //           // Data for the table (you can replace this with your actual data)
+    // const tableData = [
+    //     { bid: '123', status: 'Approved' },
+    //     { bid: '456', status: 'Pending' },
+    //     { bid: '789', status: 'Rejected' }
+    // ];
+
+    // Create the table elements
+    const table = $('<table>').addClass('table student-data-table m-t-20');
+    const thead = $('<thead>').appendTo(table);
+    const tbody = $('<tbody>').attr('id', 'bids-table-body').appendTo(table);
+    const headerRow = $('<tr>').appendTo(thead);
+    
+    // Add table headers
+    $('<th>').text('Bid').appendTo(headerRow);
+    $('<th>').text('Status').appendTo(headerRow);
+
+    // // Add table rows with data
+    // tableData.forEach(item => {
+    //     const row = $('<tr>').appendTo(tbody);
+    //     $('<td>').text(item.bid).appendTo(row);
+    //     $('<td>').text(item.status).appendTo(row);
+    // });
+
+    // Append the table to the container
+    $('#table-container').empty().append(table);
+
+
+          
+            
+
+        // var token = sessionStorage.getItem("accessToken");
+
+        // var userId = $(this).data('userid');
+        // var $button = $(this);
+
+        const myVariable = $(this).data('my-variable');
+        var token = sessionStorage.getItem("accessToken");
+        console.log(token);
+
+        $.ajax({
+            url: '/api/displayBids/'+myVariable, // Replace with your API endpoint URL
+            type: 'GET',
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            dataType: 'json',
+            success: function (data) {
+                // Handle the success response here
+                console.log(data);
+                displayBids(data);
+                
+            },
+            error: function (error) {
+                // Handle any errors that occur during the request
+                
+                console.error('Error fetching users:', error);
+            }
+        });
+
+      });
+
+
+
+
+
+
+    });
+
+
+
+        
+        
+
+        function displayBids(bids) {
+            console.log(bids);
+            var tableBody = $('#bids-table-body');
+            tableBody.empty(); // Clear any previous content
+            console.log(tableBody);
+            var bidsArray = [bids];
+            // Loop through the users and populate the table rows
+            bids.forEach(function (bid) {
+                var bidRow = '<tr>';
+                bidRow += '<td>' + bid.bid_price + '</td>';
+                bidRow += '<td>' + bid.status + '</td>';
+                // bidRow += '<td><button class="btn btn-primary btn-update" data-bidid="' + bid.id + '">Update</button></td>';
+                bidRow += '<td><button class="btn btn-primary btn-delete" data-bidid="' + bid.id + '">Delete</button></td>';
+                bidRow += '</tr>';
+
+                tableBody.append(bidRow);
+            });
+        }
+
+        
+      $(document).on('click', '.btn-delete', function () {        
+      var token = sessionStorage.getItem("accessToken");
+
+      var bidId = $(this).data('bidid');
+      var $button = $(this);
+      $.ajax({
+          type: 'DELETE',
+              headers: {
+                  "Authorization": "Bearer " + token
+              },
+          url: '/api/bidDelete/' + bidId,
+          success: function (response) {
+              $button.closest('tr').remove();
+          },
+          error: function (xhr, status, error) {
+              console.error(error);
+          }
+      });
+  });
+
+
+  
     </script>
 
   </body>

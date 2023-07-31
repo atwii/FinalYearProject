@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bid;
 use App\Models\Service;
 use App\Models\service_images;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class HomeController extends Controller
     }else{
         $service->picture="not available";
     }
-        $service->seeker=1; //auth
+        $service->seeker=$request->user;; //auth
         $service->status="new";
         $service->address=$request->address;
 
@@ -62,8 +63,8 @@ class HomeController extends Controller
     public function listServices(){
 
 
-       $user= auth()->user()->tokens();
-       dd($user);
+    //    $user= auth()->user();
+    //    dd($user);
         //if role
 
     //     $user=auth('sanctum')->user();
@@ -138,4 +139,57 @@ class HomeController extends Controller
         return redirect()->back()->with('message','Action completed Successfully');
 
     }
+
+    public function bidService(Request $request){
+        
+        Log::info($request->bidder);
+        
+
+        $bid=new Bid();
+
+        $bid->service=$request->serviceId;
+        $bid->provider=$request->bidder;
+        $bid->bid_price=$request->bidPrice;
+        $bid->status='pending';
+
+        $bid->save();
+
+
+        return redirect()->back()->with('message','Action completed Successfully');
+
+    }
+
+
+    public function displayBids($service)
+    {
+        $user=auth()->user();
+
+        if($user->role==1 || $user->role==4 || $user->role==2 ){
+
+            $bids = Bid::where('service','=',$service)->get();
+        }else{
+
+            $bids = Bid::where('service','=',$service)->where('provider','=',$user->id)->get();
+        }
+        
+        
+        return response()->json($bids);
+    }
+
+    public function deleteBid($id)
+    {
+        
+        $bid=Bid::where('id','=',$id)->first();
+        
+
+        if (!$bid) {
+            return response()->json(['error' => 'Bid not found'], 404);
+        }
+
+        $bid->delete();
+        return response()->json(['message' => 'Bid deleted successfully']);
+
+        
+    }
+
 }

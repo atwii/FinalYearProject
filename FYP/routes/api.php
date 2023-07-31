@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RetailCustomer;
 
@@ -26,6 +27,14 @@ Route::get('/check-auth', function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
 Route::post('logout', [UserController::class, 'logoutUser'])->name('logout');
+
+Route::get('/getUser', [UserController::class, 'getUser'])->name('getUser');
+
+Route::get('/displayBids/{service}', [HomeController::class, 'displayBids'])->name('displayBids');
+
+Route::delete('/bidDelete/{id}', [HomeController::class, 'deleteBid'])->name('deleteBid');
+
+
 });
 Route::post('/auth/register', [UserController::class, 'UserRegistration']);
 
@@ -71,4 +80,7 @@ Route::delete('/getServices/{id}', [AdminController::class, 'deleteService'])->n
 Route::get('/getProblems', [AdminController::class, 'showAllProblems'])->name('ShowProblems');
 Route::delete('/getProblems/{id}', [AdminController::class, 'deleteProblem'])->name('DeleteProblem');
 Route::put('/getProblems/{id}', [AdminController::class, 'updateProblem'])->name('UpdateProblem');
+
+
+
 });

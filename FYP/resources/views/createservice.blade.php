@@ -268,6 +268,8 @@ https://templatemo.com/tm-571-hexashop
         <h2>New Service</h2>
         <form id="myForm" action="{{route('postService')}}" method="POST" enctype="multipart/form-data">
             @csrf
+
+            <input id="userId" name="user" hidden>
           <div class="user-box">
             <input type="checkbox" name="type" required="" value="Sangariye" >
             <label id="type1_label">Sangariye</label>
@@ -330,6 +332,54 @@ https://templatemo.com/tm-571-hexashop
 
     <script>
 
+
+$(document).ready(function () {
+
+
+      
+
+
+$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+
+
+var token = sessionStorage.getItem("accessToken");
+console.log(token);
+// AJAX GET request to fetch all users
+$.ajax({
+    url: '/api/getUser', // Replace with your API endpoint URL
+    type: 'GET',
+    headers: {
+        "Authorization": "Bearer " + token
+    },
+    dataType: 'json',
+    success: function (data) {
+        // Handle the success response here
+        console.log(data);
+        assignUser(data);
+        
+    },
+    error: function (error) {
+        // Handle any errors that occur during the request
+        
+        console.error('Error fetching users:', error);
+    }
+});
+
+
+
+// Function to display users in the specified container
+function assignUser(user) {
+    
+  document.getElementById("userId").value=user.id;
+
+}
+
+});
 
         $(function() {
             var selectedClass = "";
