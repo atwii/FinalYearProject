@@ -19,16 +19,16 @@ Route::get('/', function () {
     return view('index');
 });
 Route::get('/tileYourFloor',function(){
-    return view('tileYourFloor');
+    return view('tileYourFloor'); //done
 });
 Route::get('/tileFinder',function(){
-    return view('tileFinder');
+    return view('tileFinder'); //done
 });
 Route::get('/tiles',function(){
-    return view('tiles');
+    return view('tiles'); //done
 });
 Route::get('/sanitaryWare',function(){
-    return view('sanitaryWare');
+    return view('sanitaryWare'); //done
 });
 Route::get('/sanitaryInfo',function(){
     return view('sanitaryInfo');
@@ -108,6 +108,10 @@ Route::post('/updateService','HomeController@updateService')->name('updateServic
 Route::post('/deleteService','HomeController@deleteService')->name('deleteService');
 
 Route::post('/bidService','HomeController@bidService')->name('bidService');
+
+Route::get('/calculator', function () {
+    return view('calculator');
+});
 
 
 
