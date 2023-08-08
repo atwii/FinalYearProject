@@ -271,29 +271,39 @@ https://templatemo.com/tm-571-hexashop
 
     <h1 class="calculator-label">+x/=</h1>
 
+    <form id="calculation-form" method="post">
 
+        @csrf
     <div class="top-left-input">
-        <label for="smallInput" class="input-label">Tile Size:</label>
-        <input type="text" id="smallInput" class="input-field">
-      </div>
+        <label for="smallInput"  class="input-label">Tile Size:</label>
+        <input type="text" name="tileSize" id="smallInput" class="input-field">
+        <label>
+            <input type="checkbox" name="checkboxFloor"> Floor
+          </label>
+          <br>
+          <label>
+            <input type="checkbox" name="checkboxWalls"> Walls
+          </label>
+    </div>
       
       <div class="container2">
         <div class="input-container">
           <label for="input1" class="input-label">Width:</label>
-          <input type="text" id="input1" class="input-field">
+          <input type="text" name="width"  class="input-field">
         </div>
         <div class="input-container">
           <label for="input2" class="input-label">Length:</label>
-          <input type="text" id="input2" class="input-field">
+          <input type="text" name="length"  class="input-field">
         </div>
         <div class="input-container">
           <label for="input3" class="input-label">Height:</label>
-          <input type="text" id="input3" class="input-field">
+          <input type="text" name="height"  class="input-field">
         </div>
       </div>
     
       <div class="button-container">
-      <button class="cta">
+        
+      <button type="submit" class="cta">
         <span class="span">Calculate</span>
         <span class="second">
           <svg width="50px" height="20px" viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -307,20 +317,24 @@ https://templatemo.com/tm-571-hexashop
     </button>
         
 </div>
+
+</form>
     <!-- Result Labels -->
   <div class="result-container">
     <label class="result-label">Walls:</label>
-    <label class="result-value" id="resultVolume">-</label>
+    <label class="result-value" id="resultWalls">-</label>
     <label class="result-label">Floor:</label>
-    <label class="result-value" id="resultArea">-</label>
+    <label class="result-value" id="resultFloor">-</label>
     <label class="result-label">Skirting Tiles:</label>
-    <label class="result-value" id="resultPerimeter">-</label>
+    <label class="result-value" id="resultSkirtingTiles">-</label>
     <label class="result-label">Adhesive:</label>
-    <label class="result-value" id="resultOther">-</label>
+    <label class="result-value" id="resultAdhesive">-</label>
     <label class="result-label">Grout:</label>
-    <label class="result-value" id="resultAnother">-</label>
+    <label class="result-value" id="resultGrout">-</label>
     <label class="result-label">Extra:</label>
-    <label class="result-value" id="resultAnother">-</label>
+    <label class="result-value" id="resultExtra">-</label>
+    <label class="result-label">Total:</label>
+    <label class="result-value" id="resultTotal">-</label>
   </div>
   
     
@@ -349,6 +363,7 @@ https://templatemo.com/tm-571-hexashop
 
     <script>
 
+
         $(function() {
             var selectedClass = "";
             $("p").click(function(){
@@ -363,8 +378,70 @@ https://templatemo.com/tm-571-hexashop
             });
         });
 
+        
+       
+        $(document).ready(function () {
+            $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
 
+
+
+    $('#submitButton').click(function() {
+      // Submit the form when the button is clicked
+      $("#calculation-form").submit();
+    });
+
+    // Handle the form submission
+    $("#calculation-form").submit(function(event) {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+
+            var formData = $(this).serialize();
+
+var token = sessionStorage.getItem("accessToken");
+console.log(token);
+// AJAX 
+$.ajax({
+    url: '/api/calculate', // Replace with your API endpoint URL
+    type: 'POST',
+    headers: {
+        "Authorization": "Bearer " + token
+    },
+    data: formData,
+    dataType: 'json',
+    success: function (data) {
+        // Handle the success response here
+        console.log(data);
+       
+
+        
+            document.getElementById("resultWalls").textContent=data.walls;
+            document.getElementById("resultFloor").textContent=data.floor;
+            document.getElementById("resultSkirtingTiles").textContent=data.skirtingTiles;
+            document.getElementById("resultAdhesive").textContent=data.adhesive;
+            document.getElementById("resultGrout").textContent=data.grout;
+            document.getElementById("resultExtra").textContent=data.extra;
+            document.getElementById("resultTotal").textContent=data.total;
+           
+    },
+    error: function (error) {
+        // Handle any errors that occur during the request
+        
+        console.error('Error fetching users:', error);
+    }
+});
+
+
+});
+
+
+        });
+        
   
     </script>
 

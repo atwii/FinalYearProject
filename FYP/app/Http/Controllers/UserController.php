@@ -88,12 +88,53 @@ class UserController extends Controller
 
     }
 
+    public function getUserProfile(){
+
+        
+        $user=auth()->user();
+
+        return response()->json($user);
+
+    }
+
     public function logoutUser(Request $request) 
     {
         auth()->user()->tokens()->delete();
         return [
             'message' => 'user logged out'
         ];
+    }
+
+    public function updateUser(Request $request){
+
+        $user=User::where('id','=',$request->id)->first();
+
+        Log::info($user);
+        if(!empty($request->email)){
+
+        $user->email=$request->email;
+    }
+        if(!empty($request->username)){
+
+        $user->username=$request->username;
+    }
+        if(!empty($request->phone_nb)){
+
+        $user->phone_nb=$request->phone_nb;
+    }
+        if(!empty($request->address)){
+
+        $user->address=$request->address;
+    }
+        if(!empty($request->password)){
+        $user->password=Hash::make($request->password);}
+        
+        $user->save();
+
+
+         return redirect()->back()->with('success', 'User Updated Successfully');
+
+
     }
     
 

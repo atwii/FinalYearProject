@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bid;
 use App\Models\Service;
 use App\Models\service_images;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -173,7 +174,12 @@ class HomeController extends Controller
         }
         
         
-        return response()->json($bids);
+        // return response()->json($bids);
+
+        return response()->json([
+            'bids'=>$bids,
+            'userRole'=>$user->role
+        ], 200);
     }
 
     public function deleteBid($id)
@@ -190,6 +196,107 @@ class HomeController extends Controller
         return response()->json(['message' => 'Bid deleted successfully']);
 
         
+    }
+
+    public function calculate(Request $request){
+
+        Log::info("entered");
+
+       
+        $width=$request->width;
+        $length=$request->length;
+
+        $total=0;
+
+        if ($request->has('checkboxFloor')) {
+            Log::info("entered2");
+           
+            $floor=$width*$length; 
+            $total=$total+$floor;
+
+        } 
+
+        if ($request->has('checkboxWalls')) {
+            Log::info("entered3");
+            $height=$request->height;
+            $walls=(2*($width+$length))*$height;
+            $total=$total+$walls;
+        } 
+
+       
+      
+       
+
+
+        
+        if(!empty($request->tileSize)){
+            $tileSize=$request->tileSize;
+        
+
+
+        //skirting tiles calculation
+
+        $size=explode("x",$tileSize);
+        
+        if($size[0]>$size[1]){
+        $smaller=$size[1];
+        $larger=$size[0];
+        }else{
+        $smaller=$size[0];
+        $larger=$size[1];
+        }
+
+        $nb_of_skirting_tiles=ceil(((2*($width+$length))*100)/$larger);
+        $howManyInTile=floor($smaller/10);
+        $howManyTiles=ceil($nb_of_skirting_tiles/$howManyInTile);
+        
+        $skirtingTiles=(($smaller/100)*($larger/100))*$howManyTiles;
+
+    }
+
+        $adhesive=$total/4;
+
+        $grout=$total/20;
+
+        $extra=$total* (10 / 100);
+
+        $total=$total+$extra;
+
+
+        return response()->json([
+            'walls'=>$walls,
+            'floor'=>$floor,
+            'skirtingTiles'=>$skirtingTiles,
+            'adhesive'=>$adhesive,
+            'grout'=>$grout,
+            'extra'=>$extra,
+            'total'=>$total
+        ], 200);
+
+
+    }
+
+
+    public function proReveal($id)
+    {
+        $user=User::where('id','=',$id)->first();
+
+       if($user->role==3){
+
+        $role="Sanitaryware";
+       }else{
+        $role="Tiles";
+       }
+        
+        
+        // return response()->json($bids);
+
+        return response()->json([
+            'email'=>$user->email,
+            'phoneNumber'=>$user->phone_nb,
+            'username'=>$user->username,
+            'role'=>$role
+        ], 200);
     }
 
 }

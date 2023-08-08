@@ -30,10 +30,15 @@ Route::post('logout', [UserController::class, 'logoutUser'])->name('logout');
 
 Route::get('/getUser', [UserController::class, 'getUser'])->name('getUser');
 
+Route::get('/getUserProfile', [UserController::class, 'getUserProfile'])->name('getUserProfile');
+
 Route::get('/displayBids/{service}', [HomeController::class, 'displayBids'])->name('displayBids');
+
+Route::get('/proReveal/{id}', [HomeController::class, 'proReveal'])->name('proReveal');
 
 Route::delete('/bidDelete/{id}', [HomeController::class, 'deleteBid'])->name('deleteBid');
 
+Route::post('/calculate', [HomeController::class, 'calculate'])->name('calculate');;
 
 });
 Route::post('/auth/register', [UserController::class, 'UserRegistration']);

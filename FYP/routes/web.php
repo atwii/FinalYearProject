@@ -113,5 +113,11 @@ Route::get('/calculator', function () {
     return view('calculator');
 });
 
+Route::get('/profile', function () {
+    return view('profile');
+});
+
+Route::post('/updateUser','UserController@updateUser')->name('updateUser');
+
 
 

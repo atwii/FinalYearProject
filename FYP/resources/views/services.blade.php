@@ -493,6 +493,38 @@ https://templatemo.com/tm-571-hexashop
     </div>
   </div>
 </div>
+
+
+
+<div class="modal fade" id="userInfoModal" tabindex="-1" role="dialog" aria-labelledby="userInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="userInfoModalLabel">User Information</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="user-profile">
+                  <img src="" alt="User Profile Picture" class="img-fluid rounded-circle">
+                  <h2 id="username"></h2>
+              </div>
+              <div class="user-info">
+                  {{-- <p><strong>Username:</strong> username</p> --}}
+                  <p><strong>Email:</strong></p><p id="email"> </p>
+                  {{-- <p><strong>Location:</strong> location</p> --}}
+                  <p><strong>Phone Number:</strong></p><p id="phoneNb"> </p>
+                  <p><strong>Bio:</strong></p><p id="bio"> </p>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
         
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -787,19 +819,23 @@ https://templatemo.com/tm-571-hexashop
         
         
 
-        function displayBids(bids) {
-            console.log(bids);
+        function displayBids(data) {
+            console.log(data);
             var tableBody = $('#bids-table-body');
             tableBody.empty(); // Clear any previous content
             console.log(tableBody);
-            var bidsArray = [bids];
+            var bidsArray = [data.bids];
             // Loop through the users and populate the table rows
-            bids.forEach(function (bid) {
+            data.bids.forEach(function (bid) {
                 var bidRow = '<tr>';
                 bidRow += '<td>' + bid.bid_price + '</td>';
                 bidRow += '<td>' + bid.status + '</td>';
                 // bidRow += '<td><button class="btn btn-primary btn-update" data-bidid="' + bid.id + '">Update</button></td>';
-                bidRow += '<td><button class="btn btn-primary btn-delete" data-bidid="' + bid.id + '">Delete</button></td>';
+                if(data.userRole==3 || data.userRole==5){// ballat aw sangare
+                bidRow += '<td><button class="btn btn-primary btn-delete" data-bidid="' + bid.id + '">Delete</button></td>';}
+                if(data.userRole==1 || data.userRole==4){//retail aw wholesale
+                bidRow += '<td><button class="btn btn-primary btn-reveal" data-proid="' + bid.provider + '">Reveal</button></td>';
+                }
                 bidRow += '</tr>';
 
                 tableBody.append(bidRow);
@@ -827,6 +863,36 @@ https://templatemo.com/tm-571-hexashop
       });
   });
 
+
+  $(document).on('click', '.btn-reveal', function () {     
+    
+    $('#userInfoModal').modal('show');
+      var token = sessionStorage.getItem("accessToken");
+
+      var proId = $(this).data('proid');
+      var $button = $(this);
+      $.ajax({
+          type: 'GET',
+              headers: {
+                  "Authorization": "Bearer " + token
+              },
+          url: '/api/proReveal/' + proId,
+          success: function (response) {
+              // $button.closest('tr').remove();
+
+              console.log(response);
+
+              $('#username').text(response.username);
+            $('#email').text(response.email);
+            $('#phoneNb').text(response.phoneNumber);
+            $('#bio').text(response.role);
+
+          },
+          error: function (xhr, status, error) {
+              console.error(error);
+          }
+      });
+  });
 
   
     </script>
