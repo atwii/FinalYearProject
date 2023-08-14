@@ -84,9 +84,9 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/services', function () {
-    return view('services');
-});
+// Route::get('/services', function () {
+//     return view('services');
+// });
 
 Route::get('/newService', function () {
     return view('createservice');
@@ -118,6 +118,10 @@ Route::get('/profile', function () {
 });
 
 Route::post('/updateUser','UserController@updateUser')->name('updateUser');
+
+Route::get('/orders', function () {
+    return view('orders');
+});
 
 
 

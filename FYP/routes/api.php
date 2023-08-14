@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RetailCustomer;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,10 @@ Route::get('/getUser', [UserController::class, 'getUser'])->name('getUser');
 Route::get('/getUserProfile', [UserController::class, 'getUserProfile'])->name('getUserProfile');
 
 Route::get('/displayBids/{service}', [HomeController::class, 'displayBids'])->name('displayBids');
+
+Route::get('/getOrderDetails/{orderId}', [OrderController::class, 'getOrderDetails'])->name('getOrderDetails');
+
+Route::get('/getOrders', [OrderController::class, 'getOrders'])->name('getOrders');
 
 Route::get('/proReveal/{id}', [HomeController::class, 'proReveal'])->name('proReveal');
 
