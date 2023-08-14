@@ -319,6 +319,7 @@
                                                 <th>Time</th>
                                                 <th>Progress</th>
                                                 <th>Total Price</th> 
+                                                <th>Receival Time</th>  
                                             </tr>
                                         </thead>
                                         <tbody  id="orders-table-body">
@@ -350,7 +351,8 @@
                                                 <th>Type</th>
                                                 <th>Time</th>
                                                 <th>Progress</th>
-                                                <th>Total Price</th> 
+                                                <th>Total Price</th>
+                                                <th>Receival Time</th>  
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -390,6 +392,35 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="timeModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Change Receival Time</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="changeTimeForm">
+                            <div class="form-group">
+                                <label for="newReceivalTime">New Receival Time</label>
+                                <input type="datetime-local" class="form-control" id="newReceivalTime" name="newReceivalTime">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="saveTimeBtn">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+        
 
         
         <!--**********************************
@@ -453,6 +484,58 @@ $.ajaxSetup({
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+
+            // Add a click event listener to the link
+$('body').on('click', '[data-toggle="modal"][data-target="#timeModal"]', function(event) {
+    event.preventDefault();
+    var orderId = $(this).data('order-id');
+    
+    // Set the data-order-id attribute for the "Save Changes" button
+    $('#saveTimeBtn').data('order-id', orderId);
+
+    // Open the modal
+    $('#timeModal').modal('show');
+});
+
+// Add a click event listener to the "Save Changes" button in the modal
+$('#saveTimeBtn').on('click', function() {
+    var newReceivalTime = $('#newReceivalTime').val();
+    var orderId = $(this).data('order-id');
+
+    // Use AJAX to update the receival time based on orderId and newReceivalTime
+    // Replace this with your actual AJAX request
+    $.ajax({
+        url: '/api/updateReceivalTime/' + orderId, // Replace with your API endpoint URL
+        type: 'PUT',
+        headers: {
+                "Authorization": "Bearer " + token
+            },
+            dataType: 'json',
+        data: {
+            newReceivalTime: newReceivalTime
+        },
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        success: function(response) {
+            // Handle success response, if needed
+            console.log(response);
+            // Close the modal after successful update
+            $('#timeModal').modal('hide');
+
+            // Refresh the page to reflect the updated data
+            location.reload();
+        },
+        error: function(error) {
+            // Handle error, if needed
+            console.error('Error updating receival time:', error);
+        }
+    });
+});
+
+
+
 
 
 
@@ -611,6 +694,7 @@ $.ajaxSetup({
 
                 }
                 bidRow += '<td><span style="padding-left:10%" class="text-muted"> ' + order.total_price + '</span></td>';
+                bidRow += '<td><a href="#" data-toggle="modal" data-target="#timeModal" data-order-id="' + order.id + '">' + order.receival_time + '</a></td>';
                 // bidRow += '<td><button class="btn btn-primary btn-update" data-bidid="' + bid.id + '">Update</button></td>';
                 // if(data.userRole==3 || data.userRole==5){// ballat aw sangare
                 // bidRow += '<td><button class="btn btn-primary btn-delete" data-bidid="' + bid.id + '">Delete</button></td>';}
@@ -626,6 +710,8 @@ $.ajaxSetup({
             });
         }
 
+
+        
         
 
 

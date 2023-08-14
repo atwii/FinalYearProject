@@ -41,5 +41,26 @@ class OrderController extends Controller
     
 }
 
+public function updateReceivalTime($orderId, Request $request)
+{
+
+    Log::info("timeeee changee");
+
+    $newReceivalTime = $request->input('newReceivalTime');
+    
+    $order=Order::where('id','=',$orderId)->first();
+
+    Log::info($order);
+
+    $order->receival_time=$newReceivalTime;
+
+    $order->save();
+
+    return response()->json([
+        'message' => 'Receival time updated successfully'
+    ], 200);
+}
+
+
 
 }

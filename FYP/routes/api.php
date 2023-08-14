@@ -37,6 +37,8 @@ Route::get('/displayBids/{service}', [HomeController::class, 'displayBids'])->na
 
 Route::get('/getOrderDetails/{orderId}', [OrderController::class, 'getOrderDetails'])->name('getOrderDetails');
 
+Route::put('/updateReceivalTime/{orderId}', [OrderController::class, 'updateReceivalTime']);
+
 Route::get('/getOrders', [OrderController::class, 'getOrders'])->name('getOrders');
 
 Route::get('/proReveal/{id}', [HomeController::class, 'proReveal'])->name('proReveal');
