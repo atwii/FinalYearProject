@@ -311,7 +311,10 @@
                 userRow += '<td>' + user1.quantity + '</td>';
                 userRow += '<td>' + user1.size + '</td>'; 
                  //var imageUrl = '{{ asset('storage') }}/app/public/' + user1.picture;
-                 var imageUrl = '{{ asset('storage') }}/' + user1.picture; // Use the correct path
+                //  console.log('user1.picture:', user1.picture);
+                //  var imageUrl = '{{ asset('storage') }}' + user1.picture; // Use the correct path
+                //  console.log('imageUrl:', imageUrl);
+                var imageUrl = '{{ asset('storage') }}' +'/'+ user1.picture; // Use the correct path
 
                 userRow += '<td><img src="' + imageUrl + '" alt="' + user.name + '" class="user-image"></td>';
                 userRow += '<td><button class="btn btn-primary btn-update" data-userid="' + user1.id + '">Update</button></td>';

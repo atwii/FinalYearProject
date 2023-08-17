@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="assets/css/owl-carousel.css">
 
     <link rel="stylesheet" href="assets/css/lightbox.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <!--
 
 TemplateMo 571 Hexashop
@@ -281,8 +283,23 @@ https://templatemo.com/tm-571-hexashop
                         
                         for (const key in user) {
                             var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
-                            userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
-                            userRow += '<div class="down-content"><a href="/tileInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+                            // userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
+                            // userRow += '<div class="down-content"><a href="/tileInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+
+                            userRow += '<div class="col-lg-4">';
+                            userRow += '<div class="item">';
+                            userRow += '<div class="thumb">';
+                            userRow += '<a href="/tileInfo?id=' + user[key].id + '">';
+                            userRow += '<img src="' + imageUrl + '" alt=""></a></div>';
+                            userRow += '<div class="favorite-icon">';
+                            userRow += '<a href="javascript:;" class="favorite-link" data-id="' + user[key].id + '">';
+                            userRow += '<i class="far fa-heart"></i></a>'; // FontAwesome heart icon link
+                            userRow += '</div>';
+                            userRow += '<div class="down-content">';
+                            userRow += '<a href="/tileInfo?id=' + user[key].id + '">';
+                            userRow += '<h4>' + user[key].name + '</h4></a>';
+                            userRow += '<span>' + user[key].price_retail + '$</span>';
+                            userRow += '</div></div></div>';
                             
                         }
                     });
@@ -295,4 +312,11 @@ https://templatemo.com/tm-571-hexashop
             });
 
     });
+
+    $(document).on('click', '.favorite-icon', function() {
+    var tileId = $(this).data('id');
+    
+    console.log(tileId);
+});
+
 </script>
