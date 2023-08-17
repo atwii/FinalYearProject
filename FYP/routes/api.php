@@ -45,7 +45,10 @@ Route::get('/proReveal/{id}', [HomeController::class, 'proReveal'])->name('proRe
 
 Route::delete('/bidDelete/{id}', [HomeController::class, 'deleteBid'])->name('deleteBid');
 
-Route::post('/calculate', [HomeController::class, 'calculate'])->name('calculate');;
+Route::post('/calculate', [HomeController::class, 'calculate'])->name('calculate');
+
+Route::post('/report-problem', [HomeController::class, 'reportProblem'])->name('report-problem');
+
 
 });
 Route::post('/auth/register', [UserController::class, 'UserRegistration']);

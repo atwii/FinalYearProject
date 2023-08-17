@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('problems', function (Blueprint $table) {
 
             $table->id();
-            $table->unsignedBigInteger('order');
-            $table->foreign('order')->references('id')->on('orders');
+            $table->integer('order')->nullable();
+            $table->integer('service')->nullable();
             $table->unsignedBigInteger('client');
             $table->foreign('client')->references('id')->on('users');
             $table->longText('description');

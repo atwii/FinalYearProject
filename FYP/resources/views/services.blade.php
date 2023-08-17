@@ -4,7 +4,13 @@
   <head>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <style>
+
+
 
 
 /* Reset some default button styles */
@@ -208,6 +214,8 @@ background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 10
   }
 }
 
+
+
 </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -306,7 +314,8 @@ https://templatemo.com/tm-571-hexashop
 
 <div class="container" style="padding-top:3%">
     
-    
+  <div id="successMessage" style="display: none;" class="alert alert-success mt-3">Problem reported successfully!</div>
+
 
       
     @foreach ($services as $service )
@@ -356,6 +365,7 @@ https://templatemo.com/tm-571-hexashop
                   <a class="dropdown-item" onclick="openUpdateModal('{{$service->id}}','{{$service->type}}','{{$service->description}}','{{$service->address}}')">Update</a>
                   <a class="dropdown-item" onclick="openDeleteModal('{{$service->id}}')" >Delete</a>
                   <a class="dropdown-item" onclick="openBidModal('{{$service->id}}')">Bid</a>
+                  <a class="dropdown-item" onclick="openProblemModal('{{$service->id}}')">Report</a>
                 </div>
               </div>
             </div>
@@ -525,6 +535,44 @@ https://templatemo.com/tm-571-hexashop
   </div>
 </div>
 
+
+
+<div class="modal fade" id="problemReportModal" tabindex="-1" role="dialog" aria-labelledby="problemReportModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="problemReportModalLabel">
+          <i class="fas fa-exclamation-triangle"></i> Report a Problem
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form enctype="multipart/form-data">
+          @csrf
+          <div class="form-group">
+            <input id="serviceProblemId" hidden>
+            <label for="problemDescription"><i class="fas fa-pencil-alt"></i> Problem Description</label>
+            <textarea class="form-control" id="problemDescription" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="problemAttachment"><i class="fas fa-image"></i> Attach Picture</label>
+            <input type="file" class="form-control-file" id="problemAttachment" multiple>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger"  id="submitProblem"><i class="fas fa-paper-plane"></i> Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
         
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -582,6 +630,37 @@ https://templatemo.com/tm-571-hexashop
                 
             });
         });
+
+
+        function openProblemModal(id){
+
+$('#problemReportModal').modal('show');
+
+console.log(id);
+
+$("#serviceProblemId").val(id);
+
+
+// document.getElementById("service-id").value=id;
+// document.getElementById("readonly-input").value=type;
+// document.getElementById("address-input").value=address;
+
+
+// const desc = description.split(":");
+// document.getElementById("description-input").value=desc[0];
+
+// if (!desc[1].length) {
+// document.getElementById("textarea-input").value=desc[1];
+// }else{
+//   document.getElementById("textarea-input").value;
+// }
+
+
+
+
+
+}
+
 
         function openUpdateModal(id,type,description,address){
 
@@ -648,6 +727,59 @@ https://templatemo.com/tm-571-hexashop
 
 
 
+
+            const submitButton = document.getElementById("submitProblem");
+
+submitButton.addEventListener("click", function() {
+  const problemDescription = document.getElementById("problemDescription").value;
+  const serviceProblemId = document.getElementById("serviceProblemId").value;
+  const problemAttachments = document.getElementById("problemAttachment").files;
+
+  const formData = new FormData();
+  formData.append("problemDescription", problemDescription);
+  formData.append("serviceProblemId", serviceProblemId);
+
+  for (let i = 0; i < problemAttachments.length; i++) {
+    formData.append("problemAttachments[]", problemAttachments[i]);
+  }
+
+
+  var token = sessionStorage.getItem("accessToken");
+  console.log(token);
+  
+  $.ajax({
+            url: '/api/report-problem', // Replace with your API endpoint URL
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            data: formData,
+                contentType: false,
+                processData: false,
+            success: function (data) {
+                // Handle the success response here
+                console.log(data);
+
+                $("#problemReportModal").modal('hide');
+
+
+                $("#successMessage").show();
+
+                
+            },
+            error: function (error) {
+                // Handle any errors that occur during the request
+                
+                console.error('Error fetching users:', error);
+            }
+        });
+        
+});
+
+
+
+
         var token = sessionStorage.getItem("accessToken");
         console.log(token);
         // AJAX GET request to fetch all users
@@ -670,6 +802,9 @@ https://templatemo.com/tm-571-hexashop
                 console.error('Error fetching users:', error);
             }
         });
+
+
+
 
         
 
@@ -699,7 +834,7 @@ https://templatemo.com/tm-571-hexashop
             // // Remove the 'Bid' item and the 'Update' item
             // $(".dropdown-item:contains('Bid'), .dropdown-item:contains('Update')").remove();
             // Remove the 'Update' and 'Delete' item
-            $(".dropdown-item:contains('Update'), .dropdown-item:contains('Delete')").remove();
+            $(".dropdown-item:contains('Update'), .dropdown-item:contains('Delete'), .dropdown-item:contains('Report')").remove();
             document.getElementById("bidder").value=user.id;
 
             if(user.role===3){
@@ -809,6 +944,9 @@ https://templatemo.com/tm-571-hexashop
 
 
 
+
+     
+ 
 
 
 

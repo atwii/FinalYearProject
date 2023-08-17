@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bid;
+use App\Models\Problem;
+use App\Models\ProblemFile;
 use App\Models\Service;
 use App\Models\service_images;
 use App\Models\User;
@@ -297,6 +299,63 @@ class HomeController extends Controller
             'username'=>$user->username,
             'role'=>$role
         ], 200);
+    }
+
+
+    public function reportProblem(Request $request){
+        
+        Log::info("problem reporting logic here");
+        
+        $problemDescription = $request->input('problemDescription');
+        $problemAttachments = $request->file('problemAttachments');
+
+        Log::info($request->serviceProblemId);
+
+        $problem=new Problem();
+
+        $problem->service=$request->serviceProblemId;
+        $problem->client=auth()->user()->id;
+        $problem->description=$problemDescription;
+        $problem->picture="available";
+        $problem->status=1;
+
+        $problem->save();
+        
+
+
+        // Validate and process attachments
+        if ($problemAttachments) {
+            $attachmentsPaths = [];
+
+            foreach ($problemAttachments as $attachment) {
+                
+
+
+                $name = time().rand(1,50).'.'.$attachment->extension();
+                $attachment->move(public_path('problem_attachments'), $name);  
+                $files[] = $name;  
+                
+                $image=new ProblemFile();
+                $image->path=$name;
+                $image->problem=$problem->id;
+                $image->save();
+ 
+            }
+
+            
+        }
+
+        
+
+
+
+
+
+
+
+        return response()->json(['message' => 'Problem reported successfully']);
+    
+
     }
 
 }

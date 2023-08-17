@@ -109,6 +109,8 @@ Route::post('/deleteService','HomeController@deleteService')->name('deleteServic
 
 Route::post('/bidService','HomeController@bidService')->name('bidService');
 
+Route::post('/reportProblem','HomeController@reportProblem')->name('reportProblem');
+
 Route::get('/calculator', function () {
     return view('calculator');
 });
