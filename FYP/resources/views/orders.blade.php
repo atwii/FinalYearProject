@@ -15,8 +15,9 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 
@@ -387,11 +388,47 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" onclick="openProblemModal()" class="btn btn-danger" data-dismiss="modal">Report</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="problemReportModal" tabindex="-1" role="dialog" aria-labelledby="problemReportModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                  <h5 class="modal-title" id="problemReportModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i> Report a Problem
+                  </h5>
+                  <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                      <input id="orderProblemId" hidden>
+                      <label for="problemDescription"><i class="fas fa-pencil-alt"></i> Problem Description</label>
+                      <textarea class="form-control" id="problemDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="problemAttachment"><i class="fas fa-image"></i> Attach Picture</label>
+                      <input type="file" class="form-control-file" id="problemAttachment" multiple>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+                  <button type="button" class="btn btn-danger"  id="submitProblem"><i class="fas fa-paper-plane"></i> Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 
         <div class="modal fade" id="timeModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -486,6 +523,57 @@ $.ajaxSetup({
             });
 
 
+            const submitButton = document.getElementById("submitProblem");
+
+submitButton.addEventListener("click", function() {
+  const problemDescription = document.getElementById("problemDescription").value;
+  const orderProblemId = document.getElementById("orderProblemId").value;
+  const problemAttachments = document.getElementById("problemAttachment").files;
+
+  const formData = new FormData();
+  formData.append("problemDescription", problemDescription);
+  formData.append("orderProblemId", orderProblemId);
+
+  for (let i = 0; i < problemAttachments.length; i++) {
+    formData.append("problemAttachments[]", problemAttachments[i]);
+  }
+
+
+  var token = sessionStorage.getItem("accessToken");
+  console.log(token);
+  
+  $.ajax({
+            url: '/api/report-problem', // Replace with your API endpoint URL
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            data: formData,
+                contentType: false,
+                processData: false,
+            success: function (data) {
+                // Handle the success response here
+                console.log(data);
+
+                $("#problemReportModal").modal('hide');
+
+
+                $("#successMessage").show();
+
+                
+            },
+            error: function (error) {
+                // Handle any errors that occur during the request
+                
+                console.error('Error fetching users:', error);
+            }
+        });
+        
+});
+
+
+
             // Add a click event listener to the link
 $('body').on('click', '[data-toggle="modal"][data-target="#timeModal"]', function(event) {
     event.preventDefault();
@@ -575,6 +663,8 @@ $('#saveTimeBtn').on('click', function() {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var orderId = button.data('order-id'); // Extract the order ID from data attribute
 
+        $("#orderProblemId").val(orderId);
+
         // Use AJAX to fetch order details based on orderId
         // Replace this with your actual AJAX request
         $.ajax({
@@ -618,6 +708,9 @@ $('#saveTimeBtn').on('click', function() {
 
                 // Append the list of order items to the modal body
                 $('#orderDetails').append(itemList);
+
+                
+                
             },
             error: function (error) {
                 console.error('Error fetching order details:', error);
@@ -629,6 +722,16 @@ $('#saveTimeBtn').on('click', function() {
        
 
     });
+
+
+    function openProblemModal(){
+
+$('#problemReportModal').modal('show');
+
+
+
+
+}
 
 
     function displayOrders(data) {

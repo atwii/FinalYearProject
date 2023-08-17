@@ -313,7 +313,12 @@ class HomeController extends Controller
 
         $problem=new Problem();
 
+        if ($request->serviceProblemId) {
         $problem->service=$request->serviceProblemId;
+    }else{
+        $problem->order=$request->orderProblemId;
+    }
+
         $problem->client=auth()->user()->id;
         $problem->description=$problemDescription;
         $problem->picture="available";

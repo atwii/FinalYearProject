@@ -641,24 +641,6 @@ console.log(id);
 $("#serviceProblemId").val(id);
 
 
-// document.getElementById("service-id").value=id;
-// document.getElementById("readonly-input").value=type;
-// document.getElementById("address-input").value=address;
-
-
-// const desc = description.split(":");
-// document.getElementById("description-input").value=desc[0];
-
-// if (!desc[1].length) {
-// document.getElementById("textarea-input").value=desc[1];
-// }else{
-//   document.getElementById("textarea-input").value;
-// }
-
-
-
-
-
 }
 
 
