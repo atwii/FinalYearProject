@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bid;
+use App\Models\Favorite;
 use App\Models\Problem;
 use App\Models\ProblemFile;
+use App\Models\Sanitaryware;
 use App\Models\Service;
 use App\Models\service_images;
+use App\Models\Tile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -362,5 +365,95 @@ class HomeController extends Controller
     
 
     }
+
+
+    public function favorite(Request $request){
+
+
+        $id=$request->input('id');
+        $type=$request->input('type');
+        $user=auth()->user()->id;
+
+        $favorited= Favorite::where('item','=',$id)->where('type','=',$type)->where('user','=',$user)->first();
+   
+if(empty($favorited)){
+        $favorite= new Favorite();
+
+        $favorite->item=$id;
+        $favorite->type=$type;
+        $favorite->user=$user;
+
+        $favorite->save();
+
+        return response()->json(['message' => 'Item favorited successfully']);
+}else{
+
+    return response()->json(['message' => 'Item already in favorites']);
+}
+
+    }
+
+
+    public function isFavorite($type){
+
+        $user=auth()->user()->id;
+
+        if($type=="tiles"){
+                $items = Tile::all();
+        }else{
+            $items = Sanitaryware::all();
+        }
+
+        $itemsArray = [];
+
+        foreach($items as $item){
+
+            $favorite= Favorite::where('item','=',$item->id)->where('type','=',$type)->where('user','=',$user)->first();
+   
+            if($favorite){
+
+                array_push($itemsArray, 1);
+                
+              }else{
+        
+                array_push($itemsArray, 0);
+        
+              }
+
+             
+}
+
+            return response()->json($itemsArray);
+
+        }
+
+     
+
+       
+        public function deleteFavorite(Request $request){
+
+
+            $id=$request->input('id');
+            $type=$request->input('type');
+            $user=auth()->user()->id;
+    
+            $favorited= Favorite::where('item','=',$id)->where('type','=',$type)->where('user','=',$user)->first();
+       
+    if(empty($favorited)){
+    
+    
+            return response()->json(['message' => 'Item has already been removed']);
+            
+    }else{
+
+        $favorited->delete();
+    
+        return response()->json(['message' => 'Item removed successfully']);
+    }
+    
+        }
+
+
+    
 
 }

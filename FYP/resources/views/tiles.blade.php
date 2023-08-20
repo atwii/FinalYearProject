@@ -2,7 +2,8 @@
 <html lang="en">
 
   <head>
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+  
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,6 +34,17 @@ https://templatemo.com/tm-571-hexashop
 
 -->
 <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<style>
+
+.text-red {
+    color: red;
+}
+    
+</style>
+
 
     </head>
     
@@ -270,17 +282,55 @@ https://templatemo.com/tm-571-hexashop
                 }
             });
         });
+
+
+
+        var tilesArray=[];
+
+
+        var token = sessionStorage.getItem("accessToken");
+  console.log(token);
+
+
+    $.ajax({
+                                url: '/api/isFavorite/tiles', // Replace with your API endpoint URL
+                                type: 'GET',
+                                dataType: 'json',
+                                headers: {
+                                    "Authorization": "Bearer " + token
+                                },
+                                
+                                success: function (response) {
+                                    // Handle the success response here
+                                   
+                                    
+                                    tilesArray=response;
+   
+    
+                                    
+                                },
+                                error: function (error) {
+                                    // Handle any errors that occur during the request
+                                    
+                                    console.error('Error:', error);
+                                }
+                            });
+
+
+           
+
         var tableBody = $('#addProducts');
         $.ajax({
                 type: 'GET',
                 url: '/api/addTile',
-                success: function(data) {
+                success:function(data) {
                     console.log(data);
                     var usersArray = [data.tiles];
                     tableBody.html('');
                     var userRow = '';
                     usersArray.forEach(function (user) {
                         
+                        console.log(tilesArray);
                         for (const key in user) {
                             var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
                             // userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
@@ -293,7 +343,14 @@ https://templatemo.com/tm-571-hexashop
                             userRow += '<img src="' + imageUrl + '" alt=""></a></div>';
                             userRow += '<div class="favorite-icon">';
                             userRow += '<a href="javascript:;" class="favorite-link" data-id="' + user[key].id + '">';
-                            userRow += '<i class="far fa-heart"></i></a>'; // FontAwesome heart icon link
+
+                                if(tilesArray[key]==1){
+                                    userRow += '<i id="favIcon" style="color:red" class="fas fa-heart"></i></a>'; // FontAwesome heart icon link
+                                }else{
+                                    userRow += '<i id="favIcon" class="far fa-heart"></i></a>'; // FontAwesome heart icon link
+            
+                                }
+                        
                             userRow += '</div>';
                             userRow += '<div class="down-content">';
                             userRow += '<a href="/tileInfo?id=' + user[key].id + '">';
@@ -303,7 +360,11 @@ https://templatemo.com/tm-571-hexashop
                             
                         }
                     });
-                    tableBody.append(userRow);
+
+                   
+                        tableBody.append(userRow);
+      
+                        
                     },
                 error: function(error) {
                     console.error('Error fetching tile information:', error);
@@ -313,10 +374,98 @@ https://templatemo.com/tm-571-hexashop
 
     });
 
-    $(document).on('click', '.favorite-icon', function() {
+
+    $(document).on('click', '.favorite-link', function() {
     var tileId = $(this).data('id');
     
     console.log(tileId);
+
+    $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+     // Toggle the 'fas' (solid) and 'far' (regular) classes to change the icon's appearance
+     $(this).find('#favIcon').toggleClass('far fas');
+
+    // Change the color of the icon to red
+    $(this).find('#favIcon').css('color', 'red');
+
+
+
+    var token = sessionStorage.getItem("accessToken");
+  console.log(token);
+
+
+  var postData = {
+            id: tileId,
+            type: 'tiles'
+        };
+
+        console.log(postData);
+
+  
+  $.ajax({
+            url: '/api/favorite', // Replace with your API endpoint URL
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            data: postData,
+            success: function (data) {
+                // Handle the success response here
+                console.log(data);
+                
+            },
+            error: function (error) {
+                // Handle any errors that occur during the request
+                
+                console.error('Error fetching users:', error);
+            }
+        });
+
+
+
 });
+
+
+function checkFavorites(){
+
+    $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var token = sessionStorage.getItem("accessToken");
+  console.log(token);
+
+
+    $.ajax({
+                                url: '/api/isFavorite/tiles', // Replace with your API endpoint URL
+                                type: 'GET',
+                                dataType: 'json',
+                                headers: {
+                                    "Authorization": "Bearer " + token
+                                },
+                                
+                                success: function (response) {
+                                    // Handle the success response here
+                                    console.log(response);
+                                    
+                                    return response;
+   
+                                    
+                                },
+                                error: function (error) {
+                                    // Handle any errors that occur during the request
+                                    
+                                    console.error('Error:', error);
+                                }
+                            });
+}
+
 
 </script>

@@ -2,7 +2,8 @@
 <html lang="en">
 
   <head>
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+  
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,7 +26,6 @@
     <link rel="stylesheet" href="assets/css/lightbox.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
 <!--
 
 TemplateMo 571 Hexashop
@@ -34,6 +34,17 @@ https://templatemo.com/tm-571-hexashop
 
 -->
 <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<style>
+
+.text-red {
+    color: red;
+}
+    
+</style>
+
 
     </head>
     
@@ -100,7 +111,7 @@ https://templatemo.com/tm-571-hexashop
             <div class="row">
                 <div class="col-lg-12">
                     <div class="inner-content">
-                        <h2>Our Products</h2>
+                        <h2>Saved Items</h2>
                     </div>
                 </div>
             </div>
@@ -112,7 +123,7 @@ https://templatemo.com/tm-571-hexashop
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-heading">
-                        <h2>Our Sanitary Ware</h2>
+                        <h2>Favorites</h2>
                     </div>
                 </div>
             </div>
@@ -121,6 +132,13 @@ https://templatemo.com/tm-571-hexashop
             <div class="row" id="addProducts">
 
             </div>
+            
+        </div>
+        <div class="container">
+            <div class="row" id="addProducts2">
+
+            </div>
+            
         </div>
     </section>
 
@@ -272,7 +290,9 @@ https://templatemo.com/tm-571-hexashop
             });
         });
 
-        var sanitaryArray=[];
+
+
+        var tilesArray=[];
 
 
         var token = sessionStorage.getItem("accessToken");
@@ -280,7 +300,7 @@ https://templatemo.com/tm-571-hexashop
 
 
     $.ajax({
-                                url: '/api/isFavorite/sanitaryware', // Replace with your API endpoint URL
+                                url: '/api/isFavorite/tiles', // Replace with your API endpoint URL
                                 type: 'GET',
                                 dataType: 'json',
                                 headers: {
@@ -291,7 +311,7 @@ https://templatemo.com/tm-571-hexashop
                                     // Handle the success response here
                                    
                                     
-                                    sanitaryArray=response;
+                                    tilesArray=response;
    
     
                                     
@@ -304,37 +324,39 @@ https://templatemo.com/tm-571-hexashop
                             });
 
 
+           
+
         var tableBody = $('#addProducts');
         $.ajax({
                 type: 'GET',
-                url: '/api/addSanitary',
-                success: function(data) {
+                url: '/api/addTile',
+                success:function(data) {
                     console.log(data);
-                    var usersArray = [data.sanitarywares];
+                    var usersArray = [data.tiles];
                     tableBody.html('');
                     var userRow = '';
                     usersArray.forEach(function (user) {
                         
+                        console.log(tilesArray);
                         for (const key in user) {
-                            // var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
-                            // userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/sanitaryInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
-                            // userRow += '<div class="down-content"><a href="/sanitaryInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
-                            
+
+                            if(tilesArray[key]==1){
+
                             var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
+                            // userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
+                            // userRow += '<div class="down-content"><a href="/tileInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+
                             userRow += '<div class="col-lg-4">';
                             userRow += '<div class="item">';
                             userRow += '<div class="thumb">';
-                            userRow += '<a href="/sanitaryInfo?id=' + user[key].id + '">';
+                            userRow += '<a href="/tileInfo?id=' + user[key].id + '">';
                             userRow += '<img src="' + imageUrl + '" alt=""></a></div>';
                             userRow += '<div class="favorite-icon">';
-                            userRow += '<a href="javascript:;" class="favorite-link" data-id="' + user[key].id + '">';
+                            userRow += '<a href="javascript:;" class="favorite-link" data-id="' + user[key].id + '" data-type=tiles>';
 
-                                if(sanitaryArray[key]==1){
-                                    userRow += '<i id="favIcon" style="color:red" class="fas fa-heart"></i></a>'; // FontAwesome heart icon link
-                                }else{
-                                    userRow += '<i id="favIcon" class="far fa-heart"></i></a>'; // FontAwesome heart icon link
-            
-                                }
+                                
+                            userRow += '<i id="favIcon" style="color:red" class="fas fa-heart"></i></a>'; // FontAwesome heart icon link
+                               
                         
                             userRow += '</div>';
                             userRow += '<div class="down-content">';
@@ -342,10 +364,14 @@ https://templatemo.com/tm-571-hexashop
                             userRow += '<h4>' + user[key].name + '</h4></a>';
                             userRow += '<span>' + user[key].price_retail + '$</span>';
                             userRow += '</div></div></div>';
-                            
+                        }
                         }
                     });
-                    tableBody.append(userRow);
+
+                   
+                        tableBody.append(userRow);
+      
+                        
                     },
                 error: function(error) {
                     console.error('Error fetching tile information:', error);
@@ -353,14 +379,116 @@ https://templatemo.com/tm-571-hexashop
                 }
             });
 
+
+
+
+            //////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+            var sanitaryArray=[];
+
+
+var token = sessionStorage.getItem("accessToken");
+console.log(token);
+
+
+$.ajax({
+                        url: '/api/isFavorite/sanitaryware', // Replace with your API endpoint URL
+                        type: 'GET',
+                        dataType: 'json',
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        
+                        success: function (response) {
+                            // Handle the success response here
+                           
+                            
+                            sanitaryArray=response;
+
+
+                            
+                        },
+                        error: function (error) {
+                            // Handle any errors that occur during the request
+                            
+                            console.error('Error:', error);
+                        }
+                    });
+
+
+   
+
+var tableBody2 = $('#addProducts2');
+$.ajax({
+        type: 'GET',
+        url: '/api/addSanitary',
+        success:function(data) {
+            console.log(data);
+            var usersArray = [data.sanitarywares];
+            tableBody2.html('');
+            var userRow2 = '';
+            usersArray.forEach(function (user) {
+                
+                console.log(sanitaryArray);
+                for (const key in user) {
+
+                    if(sanitaryArray[key]==1){
+
+                    var imageUrl = '{{ asset('storage') }}/' + user[key].picture;
+                    // userRow += '<div class="col-lg-4"><div class="item"><div class="thumb"><a href="/tileInfo?id='+user[key].id+'"><img src="'+imageUrl+'" alt=""></a></div>';
+                    // userRow += '<div class="down-content"><a href="/tileInfo?id='+user[key].id+'"><h4>'+user[key].name+'</h4></a><span>'+user[key].price_retail+'$</span></div></div></div>';
+
+                    userRow2 += '<div class="col-lg-4">';
+                    userRow2 += '<div class="item">';
+                    userRow2 += '<div class="thumb">';
+                    userRow2 += '<a href="/tileInfo?id=' + user[key].id + '">';
+                    userRow2 += '<img src="' + imageUrl + '" alt=""></a></div>';
+                    userRow2 += '<div class="favorite-icon">';
+                    userRow2 += '<a href="javascript:;" class="favorite-link" data-id="' + user[key].id + '" data-type=sanitaryware>';
+
+                        
+                    userRow2 += '<i id="favIcon" style="color:red" class="fas fa-heart"></i></a>'; // FontAwesome heart icon link
+                       
+                
+                    userRow2 += '</div>';
+                    userRow2 += '<div class="down-content">';
+                    userRow2 += '<a href="/tileInfo?id=' + user[key].id + '">';
+                    userRow2 += '<h4>' + user[key].name + '</h4></a>';
+                    userRow2 += '<span>' + user[key].price_retail + '$</span>';
+                    userRow2 += '</div></div></div>';
+                }
+                }
+            });
+
+           
+                tableBody2.append(userRow2);
+
+                
+            },
+        error: function(error) {
+            console.error('Error fetching tile information:', error);
+            // You can handle errors here, e.g., show an error message to the user
+        }
     });
 
 
 
+        
+
+    });
+
+
     $(document).on('click', '.favorite-link', function() {
-    var sanitaryId = $(this).data('id');
-    
-    console.log(sanitaryId);
+    var itemId = $(this).data('id');
+    var type = $(this).data('type');
+    console.log(itemId);
+    console.log(type);
 
     $.ajaxSetup({
                 headers: {
@@ -381,15 +509,15 @@ https://templatemo.com/tm-571-hexashop
 
 
   var postData = {
-            id: sanitaryId,
-            type: 'sanitaryware'
+            id: itemId,
+            type: type
         };
 
         console.log(postData);
 
   
   $.ajax({
-            url: '/api/favorite', // Replace with your API endpoint URL
+            url: '/api/deleteFavorite', // Replace with your API endpoint URL
             type: 'POST',
             dataType: 'json',
             headers: {
@@ -411,4 +539,9 @@ https://templatemo.com/tm-571-hexashop
 
 
 });
+
+
+
+
+
 </script>

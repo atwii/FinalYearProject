@@ -125,5 +125,9 @@ Route::get('/orders', function () {
     return view('orders');
 });
 
+Route::get('/favorites',function(){
+    return view('favorites'); //done
+});
+
 
 

@@ -49,6 +49,13 @@ Route::post('/calculate', [HomeController::class, 'calculate'])->name('calculate
 
 Route::post('/report-problem', [HomeController::class, 'reportProblem'])->name('report-problem');
 
+Route::post('/favorite', [HomeController::class, 'favorite'])->name('favorite');
+
+Route::get('/isFavorite/{type}', [HomeController::class, 'isFavorite'])->name('isFavorite');
+
+Route::post('/deleteFavorite', [HomeController::class, 'deleteFavorite'])->name('deleteFavorite');
+
+
 
 });
 Route::post('/auth/register', [UserController::class, 'UserRegistration']);
