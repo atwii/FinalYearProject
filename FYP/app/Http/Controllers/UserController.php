@@ -128,6 +128,16 @@ class UserController extends Controller
     }
         if(!empty($request->password)){
         $user->password=Hash::make($request->password);}
+
+        if(!empty($request->image)){
+
+            $image=$request->image;
+            $name = time().rand(1,50).'.'.$image->extension();
+            $image->move(public_path('profiles'), $name); 
+             
+            $user->image=$name;
+
+        }
         
         $user->save();
 

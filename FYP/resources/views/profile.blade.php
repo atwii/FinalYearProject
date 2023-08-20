@@ -307,18 +307,19 @@
                     <div class="col-lg-12">
                         <div class="profile">
                             <div class="profile-head">
-                                <div class="photo-content">
-                                  
-                                    <div class="profile-photo">
-                                        <img src="assets/images/profile.png" class="img-fluid rounded-circle" alt="">
+                                <div class="photo-content">   
+                                            
+                                    <div style="" class="profile-photo">
+                                        <img src="assets/images/profile.png" id="profileImg" class="img-fluid rounded-circle" alt="">
                                     </div>
+
                                 </div>
                                 <div class="profile-info">
                                     <div class="row justify-content-center">
                                         <div class="col-xl-8">
                                             <div class="row">
                                                 <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
-                                                    <div class="profile-name">
+                                                    <div style="padding-left:25%;" class="profile-name">
                                                         <h4 class="text-primary" id="username"></h4>
                                                         <p id="role"></p>
                                                     </div>
@@ -472,6 +473,15 @@
                                                                     <label>Username</label>
                                                                     <input type="text" name="username" id="originalUser" class="form-control">
                                                                 </div>
+                                                                <div class="form-row">
+                                                                <div class="form-group">
+                                                                    <label for="image">Choose an Image:</label>
+                                                                    <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(event)">
+                                                                </div>
+                                                                <div class="form-group" id="imagePreviewContainer" style="display: none;">
+                                                                    <img id="imagePreview" src="" alt="Image Preview" style="max-width: 300px;">
+                                                                </div>
+                                                                </div>
                                                               {{--   <div class="form-group col-md-4">
                                                                     <label>State</label>
                                                                     <select class="form-control" id="inputState">
@@ -605,6 +615,18 @@ $.ajaxSetup({
                 $('#role').text("Tiles");
             }
 
+
+
+            if(data.image){
+
+            // New image URL
+            var newImageUrl = 'profiles/'+data.image;
+
+            // Change the src attribute of the image element
+            $('#profileImg').attr('src', newImageUrl);
+
+            }
+                
                 
                 
             },
@@ -616,6 +638,29 @@ $.ajaxSetup({
         });
 
     });
+
+
+    function previewImage(event) {
+    var imagePreview = document.getElementById('imagePreview');
+    var imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    var selectedFile = event.target.files[0];
+    
+    if (selectedFile) {
+        var reader = new FileReader();
+        
+        reader.onload = function(event) {
+            imagePreview.src = event.target.result;
+            imagePreviewContainer.style.display = 'block'; // Show the preview container
+        };
+        
+        reader.readAsDataURL(selectedFile);
+    } else {
+        imagePreview.src = "";
+        imagePreviewContainer.style.display = 'none'; // Hide the preview container
+    }
+}
+
+
     </script>
     
 
