@@ -9,7 +9,8 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Hexashop - About Page</title>
+    <link rel="icon" type="image/png" href="assets/images/mainLogo.png"/>
+    <title>Warshatok - About Us</title>
 
 
     <!-- Additional CSS Files -->
@@ -51,35 +52,32 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/logo.png">
-                        </a>
+                        <img src="assets/images/MainLogo.png" style="width:120px;height:120px;padding-bottom:10px;">
+
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Men's</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Women's</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Kid's</a></li>
+                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="/tiles">Tiles</a></li>
+                            <li class="scroll-to-section"><a href="/sanitaryWare">Sanitary Ware</a></li>
+                            <li class="scroll-to-section"><a href="/listServices">Services</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
                                 <ul>
                                     <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="/calculator">Calculator</a></li>
+                                    <li><a href="favorites">Favorites</a></li>
+                                    <li><a href="/profile">Profile</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
                                 <a href="javascript:;">Features</a>
                                 <ul>
-                                    <li><a href="#">Features Page 1</a></li>
-                                    <li><a href="#">Features Page 2</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                                    <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                                    <li><a href="/tileFinder">Tile Finder</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section"><a href="index.html">Explore</a></li>
+                            <li class="scroll-to-section"><a href="/orders">Orders</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -98,8 +96,8 @@ https://templatemo.com/tm-571-hexashop
             <div class="row">
                 <div class="col-lg-12">
                     <div class="inner-content">
-                        <h2>About Our Company</h2>
-                        <span>Awesome, clean &amp; creative HTML5 Template</span>
+                        <h2>About Us</h2>
+                        <span style="color:aliceblue">Where change begins</span>
                     </div>
                 </div>
             </div>
@@ -113,23 +111,22 @@ https://templatemo.com/tm-571-hexashop
             <div class="row">
                 <div class="col-lg-6">
                     <div class="left-image">
-                        <img src="assets/images/about-left-image.jpg" alt="">
+                        <img src="assets/images/L-2020-8-10--11-53-37-275.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="right-content">
                         <h4>About Us &amp; Our Skills</h4>
-                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod kon tempor incididunt ut labore.</span>
+                        <span><p class="about-text">
+                            Welcome to Warshtok! We are a dynamic duo of passionate software engineering students on the verge of graduating from the prestigious Antonine University. Our journey began with an ambitious vision to revolutionize an often overlooked aspect of home improvement.
+                          </p>
+                          <p class="about-text">
+                            Under the guidance of our esteemed supervisor, whose wisdom and teachings have been instrumental in shaping our skills, we embarked on this remarkable journey. Our final year project became more than just an academic endeavor; it became our gateway to uncharted territories in the world of home improvement.
+                          </p></span>
                         <div class="quote">
-                            <i class="fa fa-quote-left"></i><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiuski smod kon tempor incididunt ut labore.</p>
+                            <i class="fa fa-quote-left"></i><p>Our mission is to simplify and enhance this experience, empowering users to transform their living spaces with confidence.  We invite you to join us for a more aesthetically pleasing and functional living environment.</p>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod kon tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                        </ul>
+                        
                     </div>
                 </div>
             </div>
@@ -144,7 +141,7 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-12">
                     <div class="section-heading">
                         <h2>Our Amazing Team</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                      
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -153,39 +150,17 @@ https://templatemo.com/tm-571-hexashop
                             <div class="hover-effect">
                                 <div class="inner-content">
                                     <ul>
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        
+                                        <li><a href="https://www.linkedin.com/in/salehzeineddine/"><i class="fa fa-linkedin"></i></a></li>
+                                       
                                     </ul>
                                 </div>
                             </div>
-                            <img src="assets/images/team-member-01.jpg">
+                            <img style="height:400px" src="assets/images/saleh.jpeg">
                         </div>
                         <div class="down-content">
-                            <h4>Ragnar Lodbrok</h4>
-                            <span>Product Caretaker</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="team-item">
-                        <div class="thumb">
-                            <div class="hover-effect">
-                                <div class="inner-content">
-                                    <ul>
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <img src="assets/images/team-member-02.jpg">
-                        </div>
-                        <div class="down-content">
-                            <h4>Ragnar Lodbrok</h4>
-                            <span>Product Caretaker</span>
+                            <h4>Saleh Zeineddine</h4>
+                            <span>Developer</span>
                         </div>
                     </div>
                 </div>
@@ -195,18 +170,37 @@ https://templatemo.com/tm-571-hexashop
                             <div class="hover-effect">
                                 <div class="inner-content">
                                     <ul>
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        
+                                        <li><a href="https://www.linkedin.com/in/youssef-bou-issa-52345121/"><i class="fa fa-linkedin"></i></a></li>
+                                        
                                     </ul>
                                 </div>
                             </div>
-                            <img src="assets/images/team-member-03.jpg">
+                            <img style="height:400px" src="assets/images/supervisor.jpg">
                         </div>
                         <div class="down-content">
-                            <h4>Ragnar Lodbrok</h4>
-                            <span>Product Caretaker</span>
+                            <h4>Dr. Youssef Bou Issa</h4>
+                            <span>Supervisor</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="team-item">
+                        <div class="thumb">
+                            <div class="hover-effect">
+                                <div class="inner-content">
+                                    <ul>
+                                        
+                                        <li><a href="https://www.linkedin.com/in/ali-atwi-1a9379224/"><i class="fa fa-linkedin"></i></a></li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <img style="height:400px" src="assets/images/atwi.jpeg">
+                        </div>
+                        <div class="down-content">
+                            <h4>Ali Atwi</h4>
+                            <span>Developer</span>
                         </div>
                     </div>
                 </div>
@@ -222,28 +216,28 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-12">
                     <div class="section-heading">
                         <h2>Our Services</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                        <span>The Gate To Change.</span>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="service-item">
-                        <h4>Synther Vaporware</h4>
-                        <p>Lorem ipsum dolor sit amet, consecteturti adipiscing elit, sed do eiusmod temp incididunt ut labore, et dolore quis ipsum suspend.</p>
-                        <img src="assets/images/service-01.jpg" alt="">
+                        <h4>Tiles</h4>
+                        <p>Warshtok transforms home improvement with pre-choice tiling immersion, allowing confident selections by visualizing chosen tiles in your space, ensuring harmony and eliminating uncertainty.</p>
+                        <img style="height:200px" src="assets/images/marble-tiles-and-slabs.jpeg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="service-item">
-                        <h4>Locavore Squidward</h4>
-                        <p>Lorem ipsum dolor sit amet, consecteturti adipiscing elit, sed do eiusmod temp incididunt ut labore, et dolore quis ipsum suspend.</p>
-                        <img src="assets/images/service-02.jpg" alt="">
+                        <h4>Sanitaryware</h4>
+                        <p>Warshtok innovates home improvement by providing a pre-selection experience for sanitaryware. Visualize your chosen sanitaryware in your space, ensuring confident decisions and a harmonious outcome.</p>
+                        <img style="height:200px" src="assets/images/Bathroom-fittings-and-sanitary-ware-by-Jaquar-and-Hindware.webp" alt="">
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="service-item">
-                        <h4>Health Gothfam</h4>
-                        <p>Lorem ipsum dolor sit amet, consecteturti adipiscing elit, sed do eiusmod temp incididunt ut labore, et dolore quis ipsum suspend.</p>
-                        <img src="assets/images/service-03.jpg" alt="">
+                        <h4>Services</h4>
+                        <p>Warshtok introduces a service feature where you can request tiling or sanitaryware solutions. Providers bid, enabling you to choose the best option within your budget, streamlining your home improvement journey.</p>
+                        <img style="height:200px" src="assets/images/tiles1-1024x640.webp" alt="">
                     </div>
                 </div>
             </div>
@@ -252,55 +246,7 @@ https://templatemo.com/tm-571-hexashop
     <!-- ***** Services Area Ends ***** -->
 
     <!-- ***** Subscribe Area Starts ***** -->
-    <div class="subscribe">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="section-heading">
-                        <h2>By Subscribing To Our Newsletter You Can Get 30% Off</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
-                    <form id="subscribe" action="" method="get">
-                        <div class="row">
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="name" type="text" id="name" placeholder="Your Name" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-2">
-                            <fieldset>
-                              <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
-                            </fieldset>
-                          </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <ul>
-                                <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
-                                <li>Phone:<br><span>010-020-0340</span></li>
-                                <li>Office Location:<br><span>North Miami Beach</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul>
-                                <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
-                                <li>Email:<br><span>info@company.com</span></li>
-                                <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- ***** Subscribe Area Ends ***** -->
 
     <!-- ***** Footer Start ***** -->
@@ -310,52 +256,45 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <div class="first-item">
                         <div class="logo">
-                            <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                            <img src="assets/images/MainLogo.png"  style="width:120px;height:120px;padding-bottom:10px;" alt="warshatok">
                         </div>
                         <ul>
-                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                            <li><a href="#">hexashop@company.com</a></li>
-                            <li><a href="#">010-020-0340</a></li>
+                            <li><a href="#">Hadat–Baabda, Beirut, Lebanon </a></li>
+                            
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Shopping &amp; Categories</h4>
+                    <h4>Categories</h4>
                     <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
-                        <li><a href="#">Kid's Shopping</a></li>
+                        <li><a href="/tiles">Tiles</a></li>
+                        <li><a href="/sanitaryWare">Sanitaryware</a></li>
+                        <li><a href="/listServices">Services</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
                     <h4>Useful Links</h4>
                     <ul>
-                        <li><a href="#">Homepage</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="/calculator">Calculator</a></li>
+                        <li><a href="favorites">Favorites</a></li>
+                        <li><a href="/profile">Profile</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Help &amp; Information</h4>
+                    <h4>Features</h4>
                     <ul>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">FAQ's</a></li>
-                        <li><a href="#">Shipping</a></li>
-                        <li><a href="#">Tracking ID</a></li>
+                        <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                        <li><a href="/tileFinder">Tile Finder</a></li>
+                        <li class="scroll-to-section"><a href="/orders">Orders</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                        <p>Copyright © 2023, All Rights Reserved. 
                         
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                        </ul>
+                        <br>Design: <a href="#" target="_parent" title="free css templates">TemplateMo</a></p>
+                        
                     </div>
                 </div>
             </div>

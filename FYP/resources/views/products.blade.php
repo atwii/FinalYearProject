@@ -9,7 +9,8 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Hexashop - Product Listing Page</title>
+    <link rel="icon" type="image/png" href="assets/images/mainLogo.png"/>
+    <title>Warshatok - Products</title>
 
 
     <!-- Additional CSS Files -->

@@ -11,7 +11,8 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Hexashop Ecommerce HTML CSS Template</title>
+    <link rel="icon" type="image/png" href="assets/images/mainLogo.png"/>
+    <title>Warshatok - Tiles</title>
 
 
     <!-- Additional CSS Files -->
@@ -68,23 +69,22 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/logo.png">
-                        </a>
+                        <img src="assets/images/MainLogo.png" style="width:120px;height:120px;padding-bottom:10px;">
+
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="/tiles">Tiles</a></li>
                             <li class="scroll-to-section"><a href="/sanitaryWare">Sanitary Ware</a></li>
-                            <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
+                            <li class="scroll-to-section"><a href="/listServices">Services</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
                                 <ul>
                                     <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="/calculator">Calculator</a></li>
+                                    <li><a href="favorites">Favorites</a></li>
+                                    <li><a href="/profile">Profile</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -94,7 +94,7 @@ https://templatemo.com/tm-571-hexashop
                                     <li><a href="/tileFinder">Tile Finder</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
+                            <li class="scroll-to-section"><a href="/orders">Orders</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -142,52 +142,45 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <div class="first-item">
                         <div class="logo">
-                            <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                            <img src="assets/images/MainLogo.png"  style="width:120px;height:120px;padding-bottom:10px;" alt="warshatok">
                         </div>
                         <ul>
-                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                            <li><a href="#">hexashop@company.com</a></li>
-                            <li><a href="#">010-020-0340</a></li>
+                            <li><a href="#">Hadat–Baabda, Beirut, Lebanon </a></li>
+                            
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Shopping &amp; Categories</h4>
+                    <h4>Categories</h4>
                     <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
-                        <li><a href="#">Kid's Shopping</a></li>
+                        <li><a href="/tiles">Tiles</a></li>
+                        <li><a href="/sanitaryWare">Sanitaryware</a></li>
+                        <li><a href="/listServices">Services</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
                     <h4>Useful Links</h4>
                     <ul>
-                        <li><a href="#">Homepage</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="/calculator">Calculator</a></li>
+                        <li><a href="favorites">Favorites</a></li>
+                        <li><a href="/profile">Profile</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Help &amp; Information</h4>
+                    <h4>Features</h4>
                     <ul>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">FAQ's</a></li>
-                        <li><a href="#">Shipping</a></li>
-                        <li><a href="#">Tracking ID</a></li>
+                        <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                        <li><a href="/tileFinder">Tile Finder</a></li>
+                        <li class="scroll-to-section"><a href="/orders">Orders</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                        <p>Copyright © 2023, All Rights Reserved. 
                         
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                        </ul>
+                        <br>Design: <a href="#" target="_parent" title="free css templates">TemplateMo</a></p>
+                        
                     </div>
                 </div>
             </div>

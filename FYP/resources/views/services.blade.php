@@ -225,7 +225,7 @@ background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 10
 
 
     <link rel="icon" type="image/png" href="assets/images/mainLogo.png"/>
-    <title>Warshatok</title>
+    <title>Warshatok - Services</title>
 
 
     <!-- Additional CSS Files -->
@@ -262,47 +262,47 @@ https://templatemo.com/tm-571-hexashop
     
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        
-                            <img src="assets/images/MainLogo.png" style="width:120px;height:120px;padding-bottom:10px;">
-                        
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="{{ url('tiles') }}">Tiles</a></li>
-                            <li class="scroll-to-section"><a href="{{ url('sanitaryWare') }}">Sanitary Ware</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="javascript:;">Features</a>
-                                <ul>
-                                    <li><a href="{{ url('tileYourFloor') }}">Tile Your Floor</a></li>
-                                    <li><a href="{{ url('tileFinder') }}">Tile Finder</a></li>
-                                </ul>
-                            </li>
-                            <li class="scroll-to-section"><a href="index.html">Explore</a></li>
-                        </ul>        
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <nav class="main-nav">
+                      <!-- ***** Logo Start ***** -->
+                      <img src="assets/images/MainLogo.png" style="width:120px;height:120px;padding-bottom:10px;">
+
+                      <!-- ***** Logo End ***** -->
+                      <!-- ***** Menu Start ***** -->
+                      <ul class="nav">
+                          <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                          <li class="scroll-to-section"><a href="/tiles">Tiles</a></li>
+                          <li class="scroll-to-section"><a href="/sanitaryWare">Sanitary Ware</a></li>
+                          <li class="scroll-to-section"><a href="/listServices">Services</a></li>
+                          <li class="submenu">
+                              <a href="javascript:;">Pages</a>
+                              <ul>
+                                  <li><a href="about.html">About Us</a></li>
+                                  <li><a href="/calculator">Calculator</a></li>
+                                  <li><a href="favorites">Favorites</a></li>
+                                  <li><a href="/profile">Profile</a></li>
+                              </ul>
+                          </li>
+                          <li class="submenu">
+                              <a href="javascript:;">Features</a>
+                              <ul>
+                                  <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                                  <li><a href="/tileFinder">Tile Finder</a></li>
+                              </ul>
+                          </li>
+                          <li class="scroll-to-section"><a href="/orders">Orders</a></li>
+                      </ul>        
+                      <a class='menu-trigger'>
+                          <span>Menu</span>
+                      </a>
+                      <!-- ***** Menu End ***** -->
+                  </nav>
+              </div>
+          </div>
+      </div>
+  </header>
 
     <!-- ***** Header Area End ***** -->
 
@@ -576,21 +576,56 @@ https://templatemo.com/tm-571-hexashop
         
     <!-- ***** Footer Start ***** -->
     <footer>
-        <div class="container">
-            <div class="row">
-                
-              
-                <div class="col-lg-12">
-                    <div class="under-footer">
-                        <p>Copyright © 2023, All Rights Reserved. 
-                        
-                        <br>Design: <a href="#" target="_parent" title="free css templates">TemplateMo</a></p>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-3">
+                  <div class="first-item">
+                      <div class="logo">
+                          <img src="assets/images/MainLogo.png"  style="width:120px;height:120px;padding-bottom:10px;" alt="warshatok">
+                      </div>
+                      <ul>
+                          <li><a href="#">Hadat–Baabda, Beirut, Lebanon </a></li>
+                          
+                      </ul>
+                  </div>
+              </div>
+              <div class="col-lg-3">
+                  <h4>Categories</h4>
+                  <ul>
+                      <li><a href="/tiles">Tiles</a></li>
+                      <li><a href="/sanitaryWare">Sanitaryware</a></li>
+                      <li><a href="/listServices">Services</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-3">
+                  <h4>Useful Links</h4>
+                  <ul>
+                      <li><a href="about.html">About Us</a></li>
+                      <li><a href="/calculator">Calculator</a></li>
+                      <li><a href="favorites">Favorites</a></li>
+                      <li><a href="/profile">Profile</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-3">
+                  <h4>Features</h4>
+                  <ul>
+                      <li><a href="/tileYourFloor">Tile Your Floor</a></li>
+                      <li><a href="/tileFinder">Tile Finder</a></li>
+                      <li class="scroll-to-section"><a href="/orders">Orders</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-12">
+                  <div class="under-footer">
+                      <p>Copyright © 2023, All Rights Reserved. 
+                      
+                      <br>Design: <a href="#" target="_parent" title="free css templates">TemplateMo</a></p>
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+  
     
 
     <!-- jQuery -->
