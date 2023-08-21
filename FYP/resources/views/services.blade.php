@@ -279,7 +279,7 @@ https://templatemo.com/tm-571-hexashop
                           <li class="submenu">
                               <a href="javascript:;">Pages</a>
                               <ul>
-                                  <li><a href="about.html">About Us</a></li>
+                                <li><a href="/about">About Us</a></li>
                                   <li><a href="/calculator">Calculator</a></li>
                                   <li><a href="favorites">Favorites</a></li>
                                   <li><a href="/profile">Profile</a></li>
