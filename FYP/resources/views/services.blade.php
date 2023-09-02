@@ -340,22 +340,24 @@ https://templatemo.com/tm-571-hexashop
               @endforeach
 
               <div class="card-body">
-                <div class="table-responsive" id="table-container">
-                    {{-- <table class="table student-data-table m-t-20">
-                        <thead>
-                            <tr>
-                                <th>Bid</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bids-table-body">
-
-                        </tbody>
-                    </table> --}}
-                </div>
+                <div class="table-responsive">
+                  <table class="table student-data-table m-t-20">
+                      <thead>
+                          <tr>
+                              <th>Bid</th>
+                              <th>Status</th>
+                              <!-- Add more table headers if needed -->
+                          </tr>
+                      </thead>
+                      <tbody id="bids-table-body-{{$service->id}}"> <!-- Use a unique ID -->
+                          <!-- Table rows will be added here -->
+                      </tbody>
+                  </table>
+              </div>
+              
             </div>
 
-            <button class="rounded-button"  data-my-variable="{{$service->id}}"><i class="fa fa-money"></i></button>
+            <button class="rounded-button my-rounded-button" data-my-variable="{{$service->id}}"><i class="fa fa-money"></i></button>
 
               <div class="dropdown">
                 <button style="float:right" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -847,7 +849,7 @@ submitButton.addEventListener("click", function() {
           } else if (user.role === 2) {
             // // Remove the 'Bid' item
             // $(".dropdown-item:contains('Bid')").remove();
-          } else if (user.role === 3 || user.role==5) {
+          } else if (user.role === 3 || user.role===5) {
             // // Remove the 'Bid' item and the 'Update' item
             // $(".dropdown-item:contains('Bid'), .dropdown-item:contains('Update')").remove();
             // Remove the 'Update' and 'Delete' item
@@ -895,69 +897,34 @@ submitButton.addEventListener("click", function() {
 
 
 
-        $(document).on('click', '.rounded-button', function () { 
-          
-    //           // Data for the table (you can replace this with your actual data)
-    // const tableData = [
-    //     { bid: '123', status: 'Approved' },
-    //     { bid: '456', status: 'Pending' },
-    //     { bid: '789', status: 'Rejected' }
-    // ];
+        $(document).on('click', '.my-rounded-button', function () {
+    const myVariable = $(this).data('my-variable');
+    var token = sessionStorage.getItem("accessToken");
 
-    // Create the table elements
-    const table = $('<table>').addClass('table student-data-table m-t-20');
-    const thead = $('<thead>').appendTo(table);
-    const tbody = $('<tbody>').attr('id', 'bids-table-body').appendTo(table);
-    const headerRow = $('<tr>').appendTo(thead);
-    
-    // Add table headers
-    $('<th>').text('Bid').appendTo(headerRow);
-    $('<th>').text('Status').appendTo(headerRow);
+    // Generate a unique table ID based on myVariable
+    const tableId = 'bids-table-body-' + myVariable; // Use 'bids-table-body-' instead of 'bids-table-'
 
-    // // Add table rows with data
-    // tableData.forEach(item => {
-    //     const row = $('<tr>').appendTo(tbody);
-    //     $('<td>').text(item.bid).appendTo(row);
-    //     $('<td>').text(item.status).appendTo(row);
-    // });
-
-    // Append the table to the container
-    $('#table-container').empty().append(table);
+    $.ajax({
+        url: '/api/displayBids/' + myVariable,
+        type: 'GET',
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        dataType: 'json',
+        success: function (data) {
+            // Handle the success response here
+            console.log(data);
+            displayBids(data, tableId); // Pass the unique tableId
+        },
+        error: function (error) {
+            // Handle any errors that occur during the request
+            console.error('Error fetching users:', error);
+        }
+    });
+});
 
 
-          
-            
 
-        // var token = sessionStorage.getItem("accessToken");
-
-        // var userId = $(this).data('userid');
-        // var $button = $(this);
-
-        const myVariable = $(this).data('my-variable');
-        var token = sessionStorage.getItem("accessToken");
-        console.log(token);
-
-        $.ajax({
-            url: '/api/displayBids/'+myVariable, // Replace with your API endpoint URL
-            type: 'GET',
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-            dataType: 'json',
-            success: function (data) {
-                // Handle the success response here
-                console.log(data);
-                displayBids(data);
-                
-            },
-            error: function (error) {
-                // Handle any errors that occur during the request
-                
-                console.error('Error fetching users:', error);
-            }
-        });
-
-      });
 
 
 
@@ -974,28 +941,25 @@ submitButton.addEventListener("click", function() {
         
         
 
-        function displayBids(data) {
-            console.log(data);
-            var tableBody = $('#bids-table-body');
-            tableBody.empty(); // Clear any previous content
-            console.log(tableBody);
-            var bidsArray = [data.bids];
-            // Loop through the users and populate the table rows
-            data.bids.forEach(function (bid) {
-                var bidRow = '<tr>';
-                bidRow += '<td>' + bid.bid_price + '</td>';
-                bidRow += '<td>' + bid.status + '</td>';
-                // bidRow += '<td><button class="btn btn-primary btn-update" data-bidid="' + bid.id + '">Update</button></td>';
-                if(data.userRole==3 || data.userRole==5){// ballat aw sangare
-                bidRow += '<td><button class="btn btn-primary btn-delete" data-bidid="' + bid.id + '">Delete</button></td>';}
-                if(data.userRole==1 || data.userRole==4){//retail aw wholesale
-                bidRow += '<td><button class="btn btn-primary btn-reveal" data-proid="' + bid.provider + '">Reveal</button></td>';
-                }
-                bidRow += '</tr>';
+    function displayBids(data, tableId) {
+    console.log(data);
+    var tableBody = $('#' + tableId);
+    tableBody.empty(); // Clear any previous content
 
-                tableBody.append(bidRow);
-            });
-        }
+    // Rest of your code for populating the table...
+
+    // Loop through the users and populate the table rows
+    data.bids.forEach(function (bid) {
+        var bidRow = '<tr>';
+        bidRow += '<td>' + bid.bid_price + '</td>';
+        bidRow += '<td>' + bid.status + '</td>';
+        // Add more table cells if needed
+        bidRow += '</tr>';
+
+        tableBody.append(bidRow);
+    });
+}
+
 
         
       $(document).on('click', '.btn-delete', function () {        
