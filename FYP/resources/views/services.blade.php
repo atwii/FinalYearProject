@@ -954,6 +954,12 @@ submitButton.addEventListener("click", function() {
         bidRow += '<td>' + bid.bid_price + '</td>';
         bidRow += '<td>' + bid.status + '</td>';
         // Add more table cells if needed
+                        // bidRow += '<td><button class="btn btn-primary btn-update" data-bidid="' + bid.id + '">Update</button></td>';
+                        if(data.userRole==3 || data.userRole==5){// ballat aw sangare
+                bidRow += '<td><button class="btn btn-primary btn-delete" data-bidid="' + bid.id + '">Delete</button></td>';}
+                if(data.userRole==1 || data.userRole==4){//retail aw wholesale
+                bidRow += '<td><button class="btn btn-primary btn-reveal" data-proid="' + bid.provider + '">Reveal</button></td>';
+                }
         bidRow += '</tr>';
 
         tableBody.append(bidRow);
