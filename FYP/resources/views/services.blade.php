@@ -344,8 +344,8 @@ https://templatemo.com/tm-571-hexashop
                   <table class="table student-data-table m-t-20">
                       <thead>
                           <tr>
-                              <th>Bid</th>
-                              <th>Status</th>
+                              {{-- <th>Bid</th>
+                              <th>Status</th> --}}
                               <!-- Add more table headers if needed -->
                           </tr>
                       </thead>
@@ -951,8 +951,11 @@ submitButton.addEventListener("click", function() {
     // Loop through the users and populate the table rows
     data.bids.forEach(function (bid) {
         var bidRow = '<tr>';
+        bidRow += '<th> Bid: </td>';
         bidRow += '<td>' + bid.bid_price + '</td>';
-        bidRow += '<td>' + bid.status + '</td>';
+        // bidRow += '<th> Status: </td>';
+        bidRow += '<td style="color:green">' + bid.status + '</td>';
+
         // Add more table cells if needed
                         // bidRow += '<td><button class="btn btn-primary btn-update" data-bidid="' + bid.id + '">Update</button></td>';
                         if(data.userRole==3 || data.userRole==5){// ballat aw sangare
