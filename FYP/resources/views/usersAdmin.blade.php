@@ -46,10 +46,8 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
-                <img class="logo-abbr" src="assets/adminPanel/images/logo.png" alt="">
-                <img class="logo-compact" src="assets/adminPanel/images/logo-text.png" alt="">
-                <img class="brand-title" src="assets/adminPanel/images/logo-text.png" alt="">
+            <a class="brand-logo">
+                
             </a>
 
             <div class="nav-control">
@@ -183,7 +181,7 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="./admin">Dashboard 1</a></li>
+                            <li><a href="./admin">Dashboard</a></li>
                             <li><a href="./adminUsers">Users</a></li>
                             <li><a href="./tilesAdmin">Tiles</a></li>
                             <li><a href="./sanitaryAdmin">Sanitary Ware</a></li>

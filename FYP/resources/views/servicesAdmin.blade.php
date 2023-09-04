@@ -46,10 +46,8 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
-                <img class="logo-abbr" src="assets/adminPanel/images/logo.png" alt="">
-                <img class="logo-compact" src="assets/adminPanel/images/logo-text.png" alt="">
-                <img class="brand-title" src="assets/adminPanel/images/logo-text.png" alt="">
+            <a  class="brand-logo">
+                
             </a>
 
             <div class="nav-control">
@@ -183,7 +181,7 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="./admin">Dashboard 1</a></li>
+                            <li><a href="./admin">Dashboard</a></li>
                             <li><a href="./adminUsers">Users</a></li>
                             <li><a href="./tilesAdmin">Tiles</a></li>
                             <li><a href="./sanitaryAdmin">Sanitary Ware</a></li>
@@ -219,7 +217,7 @@
                                                 <th>Seeker</th>
                                                 <th>Provider</th>
                                                 <th>Status</th>
-                                                <th>Picture</th>
+                                                <th>Description</th>
                                             </tr>
                                         </thead>
                                         <tbody id="users-table-body">
@@ -294,17 +292,22 @@
             // Loop through the users and populate the table rows
             usersArray.forEach(function (user) {
                 user.forEach(function(user1){
-
+                console.log("service");
+                console.log(user1);
                     var userRow = '<tr>';
-                userRow += '<td>' + user1.name + '</td>';
-                userRow += '<td>' + user1.origin + '</td>';
-                userRow += '<td>' + user1.price_retail + '</td>';
-                userRow += '<td>' + user1.quantity + '</td>';
-                userRow += '<td>' + user1.size + '</td>'; 
+                userRow += '<td>' + user1.type + '</td>';
+                userRow += '<td>' + user1.seeker.id + '</td>';
+                if (user1.provider !== null) {
+                userRow += '<td>' + user1.provider.id + '</td>';
+                }else{
+                userRow += '<td>' + user1.provider + '</td>';
+                }
+                userRow += '<td>' + user1.status + '</td>';
+                userRow += '<td>' + user1.description + '</td>'; 
                  //var imageUrl = '{{ asset('storage') }}/app/public/' + user1.picture;
-                 var imageUrl = '{{ asset('storage') }}/' + user1.picture; // Use the correct path
+                //  var imageUrl = '{{ asset('storage') }}/' + user1.picture; // Use the correct path
 
-                userRow += '<td><img src="' + imageUrl + '" alt="' + user.name + '" class="user-image"></td>';
+                // userRow += '<td><img src="' + imageUrl + '" alt="' + user.name + '" class="user-image"></td>';
                 userRow += '<td><button class="btn btn-primary btn-delete" data-userid="' + user1.id + '">Delete</button></td>';
                 userRow += '</tr>';
 

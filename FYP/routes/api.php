@@ -103,6 +103,10 @@ Route::get('/getProblems', [AdminController::class, 'showAllProblems'])->name('S
 Route::delete('/getProblems/{id}', [AdminController::class, 'deleteProblem'])->name('DeleteProblem');
 Route::put('/getProblems/{id}', [AdminController::class, 'updateProblem'])->name('UpdateProblem');
 
+Route::get('/dashboardData', [AdminController::class, 'getData'])->name('dashboardData');
+
+
+
 
 
 });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bid;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -9,11 +11,12 @@ use App\Models\Tile;
 use App\Models\Sanitaryware;
 use App\Models\Service;
 use App\Models\Problem;
+use App\Models\service_images;
 use League\ColorExtractor\Color;
 use League\ColorExtractor\ColorExtractor;
 use League\ColorExtractor\Palette;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -462,6 +465,19 @@ class AdminController extends Controller
         if (!$service) {
             return response()->json(['message' => 'Service not found'], 404);
         }
+
+        $bids=Bid::where('service','=',$service->id)->get();
+
+        foreach($bids as $bid){
+            $bid->delete();
+        }
+
+        $images=service_images::where('service','=',$service->id)->get();
+
+        foreach($images as $image){
+            $image->delete();
+        }
+
         $service->delete();
         return response()->json(['message' => 'Service deleted successfully'],201);
     }
@@ -493,6 +509,44 @@ class AdminController extends Controller
         $problem->status = $request->input('status');
         $problem->save();
         return response()->json(['message' => 'Problem status updated successfully'],201);
+    }
+
+
+    public function getData()
+    {
+        $userCount=User::count();
+        $serviceCount=Service::count();
+        $problemCount=Problem::count();
+        $orderCount=Order::count();
+
+        $tileCount=Tile::count();
+        $sanitarywareCount=Sanitaryware::count();
+
+        $totalItemsCount=$tileCount+$sanitarywareCount;
+
+        $retailCount=User::where('role','=',1)->count();
+        $wholesaleCount=User::where('role','=',4)->count();
+        $sangareCount=User::where('role','=',3)->count();
+        $ballatCount=User::where('role','=',5)->count();
+
+
+        
+        return response()->json([ 
+        'userCount' => $userCount,
+        'serviceCount' => $serviceCount,
+        'problemCount' => $problemCount,
+        'orderCount' => $orderCount,
+        'tileCount' => $tileCount,
+        'sanitarywareCount' => $sanitarywareCount,
+        'totalItemsCount' => $totalItemsCount,
+        'retailCount' => $retailCount,
+        'wholesaleCount' => $wholesaleCount,
+        'sangareCount' => $sangareCount,
+        'ballatCount' => $ballatCount,
+
+    
+    
+    ],201);
     }
     
 }
