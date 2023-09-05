@@ -100,6 +100,7 @@ Route::delete('/getServices/{id}', [AdminController::class, 'deleteService'])->n
 
 
 Route::get('/getProblems', [AdminController::class, 'showAllProblems'])->name('ShowProblems');
+Route::get('/getProblemImages/{id}', [AdminController::class, 'getProblemImages'])->name('getProblemImages');
 Route::delete('/getProblems/{id}', [AdminController::class, 'deleteProblem'])->name('DeleteProblem');
 Route::put('/getProblems/{id}', [AdminController::class, 'updateProblem'])->name('UpdateProblem');
 

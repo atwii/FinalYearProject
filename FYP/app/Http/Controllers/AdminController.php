@@ -11,6 +11,7 @@ use App\Models\Tile;
 use App\Models\Sanitaryware;
 use App\Models\Service;
 use App\Models\Problem;
+use App\Models\ProblemFile;
 use App\Models\service_images;
 use League\ColorExtractor\Color;
 use League\ColorExtractor\ColorExtractor;
@@ -487,9 +488,17 @@ class AdminController extends Controller
     public function showAllProblems()
     {
         $problems = Problem::with('order', 'client')->get();
-        return response()->json(['problems' => $problems]);
+        return response()->json($problems);
     }
 
+    public function getProblemImages($id){
+
+        $images=ProblemFile::where('problem','=',$id)->get();
+        return response()->json($images);
+
+
+
+    }
     public function deleteProblem($id)
     {
         $problem = Problem::find($id);

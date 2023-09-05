@@ -75,6 +75,9 @@ Route::get('/servicesAdmin',function () {
 });
 //Route::post('/users', [AdminController::class, 'store'])->name('CreateUser');
 
+Route::get('/problemsAdmin',function () {
+    return view('problemsAdmin');
+});
 
 Route::get('/', function () {
     return view('welcome');
