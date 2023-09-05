@@ -333,7 +333,7 @@ https://templatemo.com/tm-571-hexashop
                             userRow += '<div class="item">';
                             userRow += '<div class="thumb">';
                             userRow += '<a href="/tileInfo?id=' + user[key].id + '">';
-                            userRow += '<img src="' + imageUrl + '" alt=""></a></div>';
+                            userRow += '<img style="height:200px;width:300px;" src="' + imageUrl + '" alt=""></a></div>';
                             userRow += '<div class="favorite-icon">';
                             userRow += '<a href="javascript:;" class="favorite-link" data-id="' + user[key].id + '">';
 

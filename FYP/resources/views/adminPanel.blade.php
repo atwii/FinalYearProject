@@ -184,6 +184,7 @@
                             <li><a href="./adminUsers">Users</a></li>
                             <li><a href="./tilesAdmin">Tiles</a></li>
                             <li><a href="./sanitaryAdmin">Sanitary Ware</a></li>
+                            <li><a href="./servicesAdmin">Services</a></li>
                         </ul>
                     </li>
                     

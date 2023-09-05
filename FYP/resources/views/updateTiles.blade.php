@@ -224,7 +224,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Packing</label>
-                                            <input type="number" class="form-control" id="user-packing" >
+                                            <input type="text" class="form-control" id="user-packing" >
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Retail Price</label>
