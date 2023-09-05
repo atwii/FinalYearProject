@@ -519,7 +519,7 @@ https://templatemo.com/tm-571-hexashop
           </div>
           <div class="modal-body">
               <div class="user-profile">
-                  <img src="" alt="User Profile Picture" class="img-fluid rounded-circle">
+                  <img  src="assets/images/profile.png" alt="User Profile Picture" class="img-fluid rounded-circle" id="user-profile-image">
                   <h2 id="username"></h2>
               </div>
               <div class="user-info">
@@ -1010,10 +1010,14 @@ submitButton.addEventListener("click", function() {
 
               console.log(response);
 
+              if(response.image){
+              var imagePath = 'profiles/'+response.image;
+              $("#user-profile-image").attr("src", imagePath);
+              }
               $('#username').text(response.username);
-            $('#email').text(response.email);
-            $('#phoneNb').text(response.phoneNumber);
-            $('#bio').text(response.role);
+              $('#email').text(response.email);
+              $('#phoneNb').text(response.phoneNumber);
+              $('#bio').text(response.role);
 
           },
           error: function (xhr, status, error) {
