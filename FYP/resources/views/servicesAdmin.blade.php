@@ -186,6 +186,7 @@
                             <li><a href="./tilesAdmin">Tiles</a></li>
                             <li><a href="./sanitaryAdmin">Sanitary Ware</a></li>
                             <li><a href="./servicesAdmin">Services</a></li>
+                            <li><a href="./problemsAdmin">Problems</a></li>
                         </ul>
                     </li>
 

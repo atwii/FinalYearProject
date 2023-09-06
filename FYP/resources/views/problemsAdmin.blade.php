@@ -188,6 +188,7 @@
                             <li><a href="./tilesAdmin">Tiles</a></li>
                             <li><a href="./sanitaryAdmin">Sanitary Ware</a></li>
                             <li><a href="./servicesAdmin">Services</a></li>
+                            <li><a href="./problemsAdmin">Problems</a></li>
                         </ul>
                     </li>
 
@@ -339,7 +340,7 @@
                 else{
                     problemRow += '<td>' + problem1.picture + '</td>';
                 }
-                problemRow += '<td><button class="btn btn-primary btn-delete" data-problemid="' + problem1.id + '">Delete</button></td>';
+                problemRow += '<td><button class="btn btn-primary btn-delete" data-problemid="' + problem1.id + '">Solved</button></td>';
                 problemRow += '</tr>';
 
                 tableBody.append(problemRow);
@@ -395,7 +396,7 @@
    
 
 $(document).on('click', '.btn-delete', function () {
-    var userId = $(this).data('userid');
+    var problemId = $(this).data('problemid');
     var $button = $(this);
     var token = sessionStorage.getItem("accessToken");
 
@@ -404,7 +405,7 @@ $(document).on('click', '.btn-delete', function () {
             headers: {
                 "Authorization": "Bearer " + token
             },
-        url: '/api/addTile/' + userId,
+        url: '/api/getProblems/' + problemId,
         success: function (response) {
             $button.closest('tr').remove();
         },
