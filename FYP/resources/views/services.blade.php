@@ -308,7 +308,7 @@ https://templatemo.com/tm-571-hexashop
 
     
     <div class="wrap" style="margin-top:15%;">
-        <button class="button" onclick='location.href = "{{URL::to('/newService')}}"' >New</button>
+        <button id="newServiceBtn" class="button" onclick='location.href = "{{URL::to('/newService')}}"' >New</button>
       </div>
     
 
@@ -316,6 +316,12 @@ https://templatemo.com/tm-571-hexashop
     
   <div id="successMessage" style="display: none;" class="alert alert-success mt-3">Problem reported successfully!</div>
 
+
+  @if(session()->has('bidMessage'))
+    <div class="alert alert-success">
+        {{ session('bidMessage') }}
+    </div>
+@endif
 
       
     @foreach ($services as $service )
@@ -854,6 +860,9 @@ submitButton.addEventListener("click", function() {
             // $(".dropdown-item:contains('Bid'), .dropdown-item:contains('Update')").remove();
             // Remove the 'Update' and 'Delete' item
             $(".dropdown-item:contains('Update'), .dropdown-item:contains('Delete'), .dropdown-item:contains('Report')").remove();
+
+            $("#newServiceBtn").remove();
+            
             document.getElementById("bidder").value=user.id;
 
             if(user.role===3){

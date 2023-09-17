@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Exists;
 
 class HomeController extends Controller
 {
@@ -138,6 +139,7 @@ class HomeController extends Controller
         
         Log::info($request->serviceId);
         
+        Bid::where('service','=',$request->serviceId)->delete();
         service_images::where('service','=',$request->serviceId)->delete();
 
         Service::where('id','=',$request->serviceId)->delete();
@@ -151,6 +153,10 @@ class HomeController extends Controller
         Log::info($request->bidder);
         
 
+        $old_bid=Bid::where('service','=',$request->serviceId)->where('provider','=',$request->bidder)->first();
+       
+        if(empty($old_bid)){
+        
         $bid=new Bid();
 
         $bid->service=$request->serviceId;
@@ -158,10 +164,15 @@ class HomeController extends Controller
         $bid->bid_price=$request->bidPrice;
         $bid->status='pending';
 
-        $bid->save();
+        $bid->save();}
+        else{
+
+            return redirect()->back()->with('bidMessage','Bid already exists');
+
+        }
 
 
-        return redirect()->back()->with('message','Action completed Successfully');
+        return redirect()->back()->with('bidMessage','Action completed Successfully');
 
     }
 
@@ -213,6 +224,9 @@ class HomeController extends Controller
 
         $total=0;
 
+        $floor=0;
+        $walls=0;
+
         if ($request->has('checkboxFloor')) {
             Log::info("entered2");
            
@@ -259,11 +273,11 @@ class HomeController extends Controller
 
     }
 
-        $adhesive=$total/4;
+        $adhesive=ceil($total/4);
 
-        $grout=$total/20;
+        $grout=ceil($total/20);
 
-        $extra=$total* (10 / 100);
+        $extra=ceil($total* (10 / 100));
 
         $total=$total+$extra;
 
